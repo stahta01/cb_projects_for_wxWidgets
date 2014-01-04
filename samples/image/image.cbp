@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="image" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="win_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs base,core,adv`" />
+					<Add directory="$(WXWIN)/lib/$(WXCFG)" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_gcc;" />
+		</VirtualTargets>
+		<ResourceCompiler>
+			<Add directory="%WXWIN%/include" />
+			<Add directory=".." />
+		</ResourceCompiler>
+		<Unit filename="canvas.cpp" />
+		<Unit filename="canvas.h" />
+		<Unit filename="cmyk.jpg" />
+		<Unit filename="cursor.png" />
+		<Unit filename="cursor_png.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="horse.bmp" />
+		<Unit filename="horse.cur" />
+		<Unit filename="horse.gif" />
+		<Unit filename="horse.ico" />
+		<Unit filename="horse.jpg" />
+		<Unit filename="horse.pcx" />
+		<Unit filename="horse.png" />
+		<Unit filename="horse.pnm" />
+		<Unit filename="horse.tga" />
+		<Unit filename="horse.tif" />
+		<Unit filename="horse.xpm" />
+		<Unit filename="horse3.ani" />
+		<Unit filename="horse_ag.pnm" />
+		<Unit filename="horse_rg.pnm" />
+		<Unit filename="image.cpp" />
+		<Unit filename="image.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="saved.xpm" />
+		<Unit filename="smile.xbm" />
+		<Unit filename="smile.xpm" />
+		<Unit filename="test.png" />
+		<Unit filename="test.xpm" />
+		<Unit filename="toucan.png" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

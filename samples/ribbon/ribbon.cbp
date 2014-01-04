@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ribbon" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="win_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs std,ribbon`" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_gcc;" />
+		</VirtualTargets>
+		<Unit filename="align_center.xpm" />
+		<Unit filename="align_left.xpm" />
+		<Unit filename="align_right.xpm" />
+		<Unit filename="aui_style.xpm" />
+		<Unit filename="auto_crop_selection.xpm" />
+		<Unit filename="auto_crop_selection_small.xpm" />
+		<Unit filename="circle.xpm" />
+		<Unit filename="circle_small.xpm" />
+		<Unit filename="colours.xpm" />
+		<Unit filename="cross.xpm" />
+		<Unit filename="empty.xpm" />
+		<Unit filename="expand_selection_h.xpm" />
+		<Unit filename="expand_selection_v.xpm" />
+		<Unit filename="eye.xpm" />
+		<Unit filename="hexagon.xpm" />
+		<Unit filename="msw_style.xpm" />
+		<Unit filename="position_left_small.xpm" />
+		<Unit filename="position_top_small.xpm" />
+		<Unit filename="ribbon.xpm" />
+		<Unit filename="ribbondemo.cpp" />
+		<Unit filename="selection_panel.xpm" />
+		<Unit filename="square.xpm" />
+		<Unit filename="triangle.xpm" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

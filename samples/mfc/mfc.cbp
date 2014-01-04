@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mfc" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="null" />
+		<Build>
+			<Target title="win_vc">
+				<Option platforms="Windows;" />
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="msvc10" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs`" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=vc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_vc;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="%WXWIN%/include" />
+		</ResourceCompiler>
+		<Unit filename="mfctest.cpp" />
+		<Unit filename="mfctest.h" />
+		<Unit filename="mfctest.ico" />
+		<Unit filename="mfctest.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="resource.h" />
+		<Unit filename="stdafx.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

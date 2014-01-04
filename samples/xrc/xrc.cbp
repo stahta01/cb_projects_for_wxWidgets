@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="xrc" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="win_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs std,ribbon`" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_gcc;" />
+		</VirtualTargets>
+		<Unit filename="custclas.cpp" />
+		<Unit filename="custclas.h" />
+		<Unit filename="derivdlg.cpp" />
+		<Unit filename="derivdlg.h" />
+		<Unit filename="myframe.cpp" />
+		<Unit filename="myframe.h" />
+		<Unit filename="objrefdlg.cpp" />
+		<Unit filename="objrefdlg.h" />
+		<Unit filename="rc/artprov.xpm" />
+		<Unit filename="rc/artprov.xrc" />
+		<Unit filename="rc/basicdlg.xpm" />
+		<Unit filename="rc/basicdlg.xrc" />
+		<Unit filename="rc/controls.xpm" />
+		<Unit filename="rc/controls.xrc" />
+		<Unit filename="rc/custclas.xpm" />
+		<Unit filename="rc/custclas.xrc" />
+		<Unit filename="rc/derivdlg.xpm" />
+		<Unit filename="rc/derivdlg.xrc" />
+		<Unit filename="rc/fileopen.gif" />
+		<Unit filename="rc/filesave.gif" />
+		<Unit filename="rc/frame.xrc" />
+		<Unit filename="rc/fuzzy.gif" />
+		<Unit filename="rc/menu.xrc" />
+		<Unit filename="rc/objref.xrc" />
+		<Unit filename="rc/objrefdlg.xpm" />
+		<Unit filename="rc/platform.xpm" />
+		<Unit filename="rc/platform.xrc" />
+		<Unit filename="rc/quotes.gif" />
+		<Unit filename="rc/resource.xrc" />
+		<Unit filename="rc/stop.xpm" />
+		<Unit filename="rc/throbber.gif" />
+		<Unit filename="rc/toolbar.xrc" />
+		<Unit filename="rc/uncenter.xpm" />
+		<Unit filename="rc/uncenter.xrc" />
+		<Unit filename="rc/update.gif" />
+		<Unit filename="rc/variable.xpm" />
+		<Unit filename="rc/variable.xrc" />
+		<Unit filename="rc/wxbanner.gif" />
+		<Unit filename="xrcdemo.cpp" />
+		<Unit filename="xrcdemo.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

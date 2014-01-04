@@ -11,3 +11,5 @@
 *.lai
 *.la
 *.a
+/wx-config-win/.objs
+/wx-config-win/wx-config.layout

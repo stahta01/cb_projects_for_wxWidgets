@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="richtext" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="win_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs std,richtext`" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_gcc;" />
+		</VirtualTargets>
+		<Unit filename="bitmaps/alignleft.xpm" />
+		<Unit filename="bitmaps/alignright.xpm" />
+		<Unit filename="bitmaps/bold.xpm" />
+		<Unit filename="bitmaps/centre.xpm" />
+		<Unit filename="bitmaps/copy.xpm" />
+		<Unit filename="bitmaps/cut.xpm" />
+		<Unit filename="bitmaps/font.xpm" />
+		<Unit filename="bitmaps/idea.xpm" />
+		<Unit filename="bitmaps/indentless.xpm" />
+		<Unit filename="bitmaps/indentmore.xpm" />
+		<Unit filename="bitmaps/italic.xpm" />
+		<Unit filename="bitmaps/open.xpm" />
+		<Unit filename="bitmaps/paste.xpm" />
+		<Unit filename="bitmaps/redo.xpm" />
+		<Unit filename="bitmaps/save.xpm" />
+		<Unit filename="bitmaps/smiley.xpm" />
+		<Unit filename="bitmaps/underline.xpm" />
+		<Unit filename="bitmaps/undo.xpm" />
+		<Unit filename="bitmaps/zebra.xpm" />
+		<Unit filename="richtext.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

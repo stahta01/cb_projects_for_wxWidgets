@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="widgets" />
+		<Option execution_dir="." />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="win_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="`$(WX_CONFIG) --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs base,core,adv`" />
+					<Add directory="$(WXWIN)/lib/$(WXCFG)" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="win_gcc;" />
+		</VirtualTargets>
+		<Unit filename="bmpcombobox.cpp" />
+		<Unit filename="button.cpp" />
+		<Unit filename="checkbox.cpp" />
+		<Unit filename="choice.cpp" />
+		<Unit filename="clrpicker.cpp" />
+		<Unit filename="combobox.cpp" />
+		<Unit filename="datepick.cpp" />
+		<Unit filename="dirctrl.cpp" />
+		<Unit filename="dirpicker.cpp" />
+		<Unit filename="editlbox.cpp" />
+		<Unit filename="filectrl.cpp" />
+		<Unit filename="filepicker.cpp" />
+		<Unit filename="fontpicker.cpp" />
+		<Unit filename="gauge.cpp" />
+		<Unit filename="hyperlnk.cpp" />
+		<Unit filename="icons/bmpbtn.xpm" />
+		<Unit filename="icons/bmpcombobox.xpm" />
+		<Unit filename="icons/button.xpm" />
+		<Unit filename="icons/checkbox.xpm" />
+		<Unit filename="icons/choice.xpm" />
+		<Unit filename="icons/choicebk.xpm" />
+		<Unit filename="icons/clrpicker.xpm" />
+		<Unit filename="icons/combobox.xpm" />
+		<Unit filename="icons/datepick.xpm" />
+		<Unit filename="icons/dirctrl.xpm" />
+		<Unit filename="icons/dirpicker.xpm" />
+		<Unit filename="icons/filepicker.xpm" />
+		<Unit filename="icons/fontpicker.xpm" />
+		<Unit filename="icons/gauge.xpm" />
+		<Unit filename="icons/hyperlnk.xpm" />
+		<Unit filename="icons/listbook.xpm" />
+		<Unit filename="icons/listbox.xpm" />
+		<Unit filename="icons/notebook.xpm" />
+		<Unit filename="icons/odcombobox.xpm" />
+		<Unit filename="icons/radiobox.xpm" />
+		<Unit filename="icons/scrolbar.xpm" />
+		<Unit filename="icons/slider.xpm" />
+		<Unit filename="icons/spinbtn.xpm" />
+		<Unit filename="icons/statbmp.xpm" />
+		<Unit filename="icons/statbox.xpm" />
+		<Unit filename="icons/stattext.xpm" />
+		<Unit filename="icons/text.xpm" />
+		<Unit filename="icons/timepick.xpm" />
+		<Unit filename="icons/toggle.xpm" />
+		<Unit filename="itemcontainer.cpp" />
+		<Unit filename="itemcontainer.h" />
+		<Unit filename="listbox.cpp" />
+		<Unit filename="notebook.cpp" />
+		<Unit filename="odcombobox.cpp" />
+		<Unit filename="radiobox.cpp" />
+		<Unit filename="searchctrl.cpp" />
+		<Unit filename="slider.cpp" />
+		<Unit filename="spinbtn.cpp" />
+		<Unit filename="statbmp.cpp" />
+		<Unit filename="static.cpp" />
+		<Unit filename="textctrl.cpp" />
+		<Unit filename="timepick.cpp" />
+		<Unit filename="toggle.cpp" />
+		<Unit filename="widgets.cpp" />
+		<Unit filename="widgets.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
