@@ -77,7 +77,7 @@ class ChoiceWidgetsPage : public ItemContainerWidgetsPage
 public:
     ChoiceWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
 
-    virtual wxControl *GetWidget() const wxOVERRIDE { return m_choice; }
+    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_choice; }
     virtual wxItemContainer* GetContainer() const wxOVERRIDE { return m_choice; }
     virtual void RecreateWidget() wxOVERRIDE { CreateChoice(); }
 
@@ -314,7 +314,7 @@ void ChoiceWidgetsPage::CreateChoice()
                             flags);
 
     m_choice->Set(items);
-    m_sizerChoice->Add(m_choice, 1, wxGROW | wxALL, 5);
+    m_sizerChoice->Add(m_choice, 0, wxGROW | wxALL, 5);
     m_sizerChoice->Layout();
 }
 

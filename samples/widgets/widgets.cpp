@@ -78,6 +78,7 @@ enum
     Widgets_SetPageBg,
     Widgets_SetFont,
     Widgets_Enable,
+    Widgets_Show,
 
     Widgets_BorderNone,
     Widgets_BorderStatic,
@@ -86,6 +87,11 @@ enum
     Widgets_BorderSunken,
     Widgets_BorderDouble,
     Widgets_BorderDefault,
+
+    Widgets_VariantNormal,
+    Widgets_VariantSmall,
+    Widgets_VariantMini,
+    Widgets_VariantLarge,
 
     Widgets_LayoutDirection,
 
@@ -167,7 +173,9 @@ protected:
     void OnSetPageBg(wxCommandEvent& event);
     void OnSetFont(wxCommandEvent& event);
     void OnEnable(wxCommandEvent& event);
+    void OnShow(wxCommandEvent &event);
     void OnSetBorder(wxCommandEvent& event);
+    void OnSetVariant(wxCommandEvent& event);
 
     void OnToggleLayoutDirection(wxCommandEvent& event);
 
@@ -265,7 +273,7 @@ WX_DEFINE_ARRAY_PTR(WidgetsPage *, ArrayWidgetsPage);
 // misc macros
 // ----------------------------------------------------------------------------
 
-IMPLEMENT_APP(WidgetsApp)
+wxIMPLEMENT_APP(WidgetsApp);
 
 // ----------------------------------------------------------------------------
 // event tables
@@ -291,9 +299,13 @@ wxBEGIN_EVENT_TABLE(WidgetsFrame, wxFrame)
     EVT_MENU(Widgets_SetPageBg,   WidgetsFrame::OnSetPageBg)
     EVT_MENU(Widgets_SetFont,     WidgetsFrame::OnSetFont)
     EVT_MENU(Widgets_Enable,      WidgetsFrame::OnEnable)
+    EVT_MENU(Widgets_Show,        WidgetsFrame::OnShow)
 
     EVT_MENU_RANGE(Widgets_BorderNone, Widgets_BorderDefault,
                    WidgetsFrame::OnSetBorder)
+
+    EVT_MENU_RANGE(Widgets_VariantNormal, Widgets_VariantLarge,
+                   WidgetsFrame::OnSetVariant)
 
     EVT_MENU(Widgets_LayoutDirection,   WidgetsFrame::OnToggleLayoutDirection)
 
@@ -387,6 +399,7 @@ WidgetsFrame::WidgetsFrame(const wxString& title)
     menuWidget->Append(Widgets_SetPageBg,   wxT("Set &page background...\tShift-Ctrl-B"));
     menuWidget->Append(Widgets_SetFont,     wxT("Set f&ont...\tCtrl-O"));
     menuWidget->AppendCheckItem(Widgets_Enable,  wxT("&Enable/disable\tCtrl-E"));
+    menuWidget->AppendCheckItem(Widgets_Show, wxT("Show/Hide"));
 
     wxMenu *menuBorders = new wxMenu;
     menuBorders->AppendRadioItem(Widgets_BorderDefault, wxT("De&fault\tCtrl-Shift-9"));
@@ -397,6 +410,13 @@ WidgetsFrame::WidgetsFrame(const wxString& title)
     menuBorders->AppendRadioItem(Widgets_BorderRaised, wxT("&Raised\tCtrl-Shift-4"));
     menuBorders->AppendRadioItem(Widgets_BorderSunken, wxT("S&unken\tCtrl-Shift-5"));
     menuWidget->AppendSubMenu(menuBorders, wxT("Set &border"));
+
+    wxMenu* const menuVariants = new wxMenu;
+    menuVariants->AppendRadioItem(Widgets_VariantMini, "&Mini\tCtrl-Shift-6");
+    menuVariants->AppendRadioItem(Widgets_VariantSmall, "&Small\tCtrl-Shift-7");
+    menuVariants->AppendRadioItem(Widgets_VariantNormal, "&Normal\tCtrl-Shift-8");
+    menuVariants->AppendRadioItem(Widgets_VariantLarge, "&Large\tCtrl-Shift-9");
+    menuWidget->AppendSubMenu(menuVariants, "Set &variant");
 
     menuWidget->AppendSeparator();
     menuWidget->AppendCheckItem(Widgets_LayoutDirection,
@@ -431,6 +451,9 @@ WidgetsFrame::WidgetsFrame(const wxString& title)
     SetMenuBar(mbar);
 
     mbar->Check(Widgets_Enable, true);
+    mbar->Check(Widgets_Show, true);
+
+    mbar->Check(Widgets_VariantNormal, true);
 #endif // wxUSE_MENUS
 
     // create controls
@@ -863,6 +886,13 @@ void WidgetsFrame::OnEnable(wxCommandEvent& event)
     CurrentPage()->SetUpWidget();
 }
 
+void WidgetsFrame::OnShow(wxCommandEvent &event)
+{
+    WidgetsPage::GetAttrs().m_show = event.IsChecked();
+
+    CurrentPage()->SetUpWidget();
+}
+
 void WidgetsFrame::OnSetBorder(wxCommandEvent& event)
 {
     int border;
@@ -890,6 +920,28 @@ void WidgetsFrame::OnSetBorder(wxCommandEvent& event)
     page->RecreateWidget();
     // re-apply the attributes to the widget(s)
     page->SetUpWidget();
+}
+
+void WidgetsFrame::OnSetVariant(wxCommandEvent& event)
+{
+    wxWindowVariant v;
+    switch ( event.GetId() )
+    {
+        case Widgets_VariantSmall:  v = wxWINDOW_VARIANT_SMALL; break;
+        case Widgets_VariantMini:   v = wxWINDOW_VARIANT_MINI; break;
+        case Widgets_VariantLarge:  v = wxWINDOW_VARIANT_LARGE; break;
+
+        default:
+            wxFAIL_MSG( "unknown window variant" );
+            wxFALLTHROUGH;
+
+        case Widgets_VariantNormal: v = wxWINDOW_VARIANT_NORMAL; break;
+    }
+
+    WidgetsPage::GetAttrs().m_variant = v;
+
+    CurrentPage()->SetUpWidget();
+    CurrentPage()->Layout();
 }
 
 void WidgetsFrame::OnToggleLayoutDirection(wxCommandEvent& event)
@@ -1214,6 +1266,8 @@ void WidgetsPage::SetUpWidget()
             it != widgets.end();
             ++it )
     {
+        wxCHECK_RET(*it, "NULL widget");
+
 #if wxUSE_TOOLTIPS
         (*it)->SetToolTip(GetAttrs().m_tooltip);
 #endif // wxUSE_TOOLTIPS
@@ -1235,11 +1289,14 @@ void WidgetsPage::SetUpWidget()
 
         (*it)->SetLayoutDirection(GetAttrs().m_dir);
         (*it)->Enable(GetAttrs().m_enabled);
+        (*it)->Show(GetAttrs().m_show);
 
         if ( GetAttrs().m_cursor.IsOk() )
         {
             (*it)->SetCursor(GetAttrs().m_cursor);
         }
+
+        (*it)->SetWindowVariant(GetAttrs().m_variant);
 
         (*it)->Refresh();
     }

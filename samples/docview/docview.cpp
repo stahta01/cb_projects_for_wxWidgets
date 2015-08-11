@@ -70,7 +70,7 @@
 // MyApp implementation
 // ----------------------------------------------------------------------------
 
-IMPLEMENT_APP(MyApp)
+wxIMPLEMENT_APP(MyApp);
 
 wxBEGIN_EVENT_TABLE(MyApp, wxApp)
     EVT_MENU(wxID_ABOUT, MyApp::OnAbout)
@@ -152,10 +152,12 @@ bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxApp::OnCmdLineParsed(parser);
 }
 
+#ifdef __WXMAC__
 void MyApp::MacNewFile()
 {
     wxDocManager::GetDocumentManager()->CreateNewDocument();
 }
+#endif // __WXMAC__
 
 bool MyApp::OnInit()
 {

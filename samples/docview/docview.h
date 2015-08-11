@@ -40,7 +40,9 @@ public:
     virtual void OnInitCmdLine(wxCmdLineParser& parser) wxOVERRIDE;
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser) wxOVERRIDE;
 
+#ifdef __WXMAC__
     virtual void MacNewFile() wxOVERRIDE;
+#endif // __WXMAC__
 
     // our specific methods
     Mode GetMode() const { return m_mode; }
@@ -85,6 +87,6 @@ private:
     wxDECLARE_NO_COPY_CLASS(MyApp);
 };
 
-DECLARE_APP(MyApp)
+wxDECLARE_APP(MyApp);
 
 #endif // _WX_SAMPLES_DOCVIEW_DOCVIEW_H_

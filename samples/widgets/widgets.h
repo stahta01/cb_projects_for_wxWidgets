@@ -83,7 +83,7 @@ enum
     ALL_CTRLS        = 1 << ALL_PAGE
 };
 
-typedef wxVector<wxControl *> Widgets;
+typedef wxVector<wxWindow *> Widgets;
 
 // ----------------------------------------------------------------------------
 // WidgetsPage: a book page demonstrating some widget
@@ -98,7 +98,9 @@ struct WidgetAttributes
         m_tooltip = "This is a tooltip";
 #endif // wxUSE_TOOLTIPS
         m_enabled = true;
+        m_show = true;
         m_dir = wxLayout_LeftToRight;
+        m_variant = wxWINDOW_VARIANT_NORMAL;
         m_cursor = *wxSTANDARD_CURSOR;
         m_defaultFlags = wxBORDER_DEFAULT;
     }
@@ -113,7 +115,9 @@ struct WidgetAttributes
     wxColour m_colBg;
     wxColour m_colPageBg;
     bool m_enabled;
+    bool m_show;
     wxLayoutDirection m_dir;
+    wxWindowVariant m_variant;
     wxCursor m_cursor;
     // the default flags, currently only contains border flags
     int m_defaultFlags;
@@ -127,7 +131,7 @@ public:
                 const char *const icon[]);
 
     // return the control shown by this page
-    virtual wxControl *GetWidget() const = 0;
+    virtual wxWindow *GetWidget() const = 0;
 
     // return the control shown by this page, if it supports text entry interface
     virtual wxTextEntryBase *GetTextEntry() const { return NULL; }

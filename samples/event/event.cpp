@@ -73,7 +73,7 @@ public:
     void OnClickDynamicHandlerApp(wxCommandEvent& event);
     void OnClickStaticHandlerApp(wxCommandEvent& event);
 
-    // we override wxConsoleApp::FilterEvent used to highlight the events
+    // we override wxAppConsole::FilterEvent used to highlight the events
     // handling order
     virtual int FilterEvent(wxEvent& event) wxOVERRIDE;
 
@@ -274,7 +274,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also declares the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-IMPLEMENT_APP(MyApp)
+wxIMPLEMENT_APP(MyApp);
 
 // ============================================================================
 // implementation

@@ -91,7 +91,7 @@ class App: public wxApp {
     friend class AppFrame;
 
 public:
-    //! the main function called durning application start
+    //! the main function called during application start
     virtual bool OnInit ();
 
     //! application exit function
@@ -108,7 +108,7 @@ protected:
 };
 
 // created dynamically by wxWidgets
-DECLARE_APP (App);
+wxDECLARE_APP(App);
 
 //----------------------------------------------------------------------------
 //! frame of the application APP_VENDOR-APP_NAME.
@@ -190,7 +190,7 @@ private:
 // implementation
 //============================================================================
 
-IMPLEMENT_APP (App)
+wxIMPLEMENT_APP(App);
 
 
 wxBEGIN_EVENT_TABLE(App, wxApp)
@@ -485,11 +485,11 @@ void AppFrame::CreateMenu ()
     menuEdit->Append (wxID_SELECTALL, _("&Select all\tCtrl+A"));
     menuEdit->Append (myID_SELECTLINE, _("Select &line\tCtrl+L"));
 
-    // hilight submenu
-    wxMenu *menuHilight = new wxMenu;
+    // highlight submenu
+    wxMenu *menuHighlight = new wxMenu;
     int Nr;
     for (Nr = 0; Nr < g_LanguagePrefsSize; Nr++) {
-        menuHilight->Append (myID_HILIGHTFIRST + Nr,
+        menuHighlight->Append (myID_HIGHLIGHTFIRST + Nr,
                              g_LanguagePrefs [Nr].name);
     }
 
@@ -500,7 +500,7 @@ void AppFrame::CreateMenu ()
 
     // View menu
     wxMenu *menuView = new wxMenu;
-    menuView->Append (myID_HILIGHTLANG, _("&Hilight language .."), menuHilight);
+    menuView->Append (myID_HIGHLIGHTLANG, _("&Highlight language .."), menuHighlight);
     menuView->AppendSeparator();
     menuView->AppendCheckItem (myID_FOLDTOGGLE, _("&Toggle current fold\tCtrl+T"));
     menuView->AppendCheckItem (myID_OVERTYPE, _("&Overwrite mode\tIns"));

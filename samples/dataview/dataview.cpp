@@ -233,7 +233,7 @@ private:
 // MyApp
 // ----------------------------------------------------------------------------
 
-IMPLEMENT_APP(MyApp)
+wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
@@ -640,6 +640,8 @@ void MyFrame::BuildDataViewCtrl(wxPanel* parent, unsigned int nPanel, unsigned l
                                             wxALIGN_NOT,
                                             wxDATAVIEW_COL_REORDERABLE | wxDATAVIEW_COL_SORTABLE);
 
+            m_ctrl[1]->AppendDateColumn("date",
+                                        MyListModel::Col_Date);
             m_attributes =
                 new wxDataViewColumn("attributes",
                                      new wxDataViewTextRenderer,
