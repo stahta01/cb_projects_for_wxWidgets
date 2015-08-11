@@ -546,6 +546,9 @@ void AppFrame::CreateMenu ()
     menuExtra->Append (myID_CHANGECASE, _("Change &case to .."), menuChangeCase);
     menuExtra->AppendSeparator();
     menuExtra->Append (myID_CONVERTEOL, _("Convert line &endings to .."), menuConvertEOL);
+    menuExtra->AppendCheckItem(myID_MULTIPLE_SELECTIONS, _("Toggle &multiple selections"));
+    menuExtra->AppendCheckItem(myID_MULTI_PASTE, _("Toggle multi-&paste"));
+    menuExtra->AppendCheckItem(myID_MULTIPLE_SELECTIONS_TYPING, _("Toggle t&yping on multiple selections"));
 
     // Window menu
     wxMenu *menuWindow = new wxMenu;
@@ -648,7 +651,7 @@ AppAbout::AppAbout (wxWindow *parent,
     wxBoxSizer *totalpane = new wxBoxSizer (wxVERTICAL);
     totalpane->Add (0, 20);
     wxStaticText *appname = new wxStaticText(this, wxID_ANY, *g_appname);
-    appname->SetFont (wxFont (24, wxDEFAULT, wxNORMAL, wxBOLD));
+    appname->SetFont (wxFontInfo(24).Bold());
     totalpane->Add (appname, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 40);
     totalpane->Add (0, 10);
     totalpane->Add (aboutpane, 0, wxEXPAND | wxALL, 4);

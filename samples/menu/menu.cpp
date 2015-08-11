@@ -25,7 +25,9 @@
 
 #ifndef WX_PRECOMP
     #include "wx/app.h"
+    #include "wx/bitmap.h"
     #include "wx/frame.h"
+    #include "wx/image.h"
     #include "wx/menu.h"
     #include "wx/msgdlg.h"
     #include "wx/log.h"
@@ -40,7 +42,7 @@
 
 // not all ports have support for EVT_CONTEXT_MENU yet, don't define
 // USE_CONTEXT_MENU for those which don't
-#if defined(__WXMOTIF__) || defined(__WXPM__) || defined(__WXX11__)
+#if defined(__WXMOTIF__) || defined(__WXX11__)
     #define USE_CONTEXT_MENU 0
 #else
     #define USE_CONTEXT_MENU 1
@@ -68,7 +70,7 @@
 class MyApp: public wxApp
 {
 public:
-    bool OnInit();
+    bool OnInit() wxOVERRIDE;
 };
 
 // Define a new frame
@@ -607,6 +609,33 @@ MyFrame::MyFrame()
     testMenu->Append(Menu_Test_Normal, wxT("&Normal item"));
     testMenu->AppendSeparator();
     testMenu->AppendCheckItem(Menu_Test_Check, wxT("&Check item"));
+
+#ifdef __WXMSW__
+#if wxUSE_IMAGE
+    wxBitmap bmpUnchecked(8, 8);
+
+    wxImage imageChecked(8, 8);
+    imageChecked.Clear(0xff);
+    wxBitmap bmpChecked(imageChecked);
+
+    wxMenuItem *checkedBitmapItem = new wxMenuItem(testMenu, wxID_ANY,
+        "Check item with bitmaps", "", wxITEM_CHECK);
+    checkedBitmapItem->SetBitmaps(bmpChecked, bmpUnchecked);
+    testMenu->Append(checkedBitmapItem);
+
+    checkedBitmapItem = new wxMenuItem(testMenu, wxID_ANY,
+        "Check item with bitmaps set afterwards", "", wxITEM_CHECK);
+    testMenu->Append(checkedBitmapItem);
+    checkedBitmapItem->SetBitmaps(bmpChecked, bmpUnchecked);
+
+    checkedBitmapItem = new wxMenuItem(testMenu, wxID_ANY,
+        "Check item with bitmaps set afterwards (initially checked)", "", wxITEM_CHECK);
+    testMenu->Append(checkedBitmapItem);
+    checkedBitmapItem->Check();
+    checkedBitmapItem->SetBitmaps(bmpChecked, bmpUnchecked);
+#endif
+#endif
+
     testMenu->AppendSeparator();
     testMenu->AppendRadioItem(Menu_Test_Radio1, wxT("Radio item &1"));
     testMenu->AppendRadioItem(Menu_Test_Radio2, wxT("Radio item &2"));
@@ -1210,6 +1239,18 @@ void MyFrame::LogMenuOpenCloseOrHighlight(const wxMenuEvent& event, const wxChar
     if ( event.GetEventType() == wxEVT_MENU_HIGHLIGHT )
     {
         msg << wxT(" (id=") << event.GetId() << wxT(")");
+    }
+    else // wxEVT_MENU_{OPEN,CLOSE}
+    {
+        wxMenu* const menu = event.GetMenu();
+        if ( menu )
+        {
+            msg << " (menu with title \"" << menu->GetTitle() << "\")";
+        }
+        else
+        {
+            msg << " (no menu)";
+        }
     }
 
     msg << wxT(".");

@@ -258,7 +258,7 @@ MyFrame::MyFrame(const wxString& title)
 //                    wxString, Title, wxPoint, Position, wxSize, Size )
 //
 //  wxBEGIN_EVENT_TABLE(MyXTIFrame, wxFrame)
-// wxEND_EVENT_TABLE()
+//  wxEND_EVENT_TABLE()
 
 // the following class "persists" (i.e. saves) a wxFrame into a wxObjectWriter
 

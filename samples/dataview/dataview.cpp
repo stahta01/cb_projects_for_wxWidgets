@@ -53,7 +53,7 @@
 class MyApp: public wxApp
 {
 public:
-    virtual bool OnInit();
+    virtual bool OnInit() wxOVERRIDE;
 };
 
 // ----------------------------------------------------------------------------
@@ -114,7 +114,9 @@ private:
     void OnHeaderClick( wxDataViewEvent &event );
     void OnAttrHeaderClick( wxDataViewEvent &event );
     void OnHeaderRightClick( wxDataViewEvent &event );
+    void OnHeaderClickList( wxDataViewEvent &event );
     void OnSorted( wxDataViewEvent &event );
+    void OnSortedList( wxDataViewEvent &event );
 
     void OnContextMenu( wxDataViewEvent &event );
 
@@ -122,6 +124,8 @@ private:
     void OnAddMany( wxCommandEvent &event);
     void OnHideAttributes( wxCommandEvent &event);
     void OnShowAttributes( wxCommandEvent &event);
+
+    void OnMultipleSort( wxCommandEvent &event);
 
 #if wxUSE_DRAG_AND_DROP
     void OnBeginDrag( wxDataViewEvent &event );
@@ -172,7 +176,7 @@ public:
                                    wxALIGN_CENTER)
        { }
 
-    virtual bool Render( wxRect rect, wxDC *dc, int state )
+    virtual bool Render( wxRect rect, wxDC *dc, int state ) wxOVERRIDE
     {
         dc->SetBrush( *wxLIGHT_GREY_BRUSH );
         dc->SetPen( *wxTRANSPARENT_PEN );
@@ -192,7 +196,7 @@ public:
                               wxDataViewModel *WXUNUSED(model),
                               const wxDataViewItem &WXUNUSED(item),
                               unsigned int WXUNUSED(col),
-                              const wxMouseEvent *mouseEvent)
+                              const wxMouseEvent *mouseEvent) wxOVERRIDE
     {
         wxString position;
         if ( mouseEvent )
@@ -203,18 +207,18 @@ public:
         return false;
     }
 
-    virtual wxSize GetSize() const
+    virtual wxSize GetSize() const wxOVERRIDE
     {
         return wxSize(60,20);
     }
 
-    virtual bool SetValue( const wxVariant &value )
+    virtual bool SetValue( const wxVariant &value ) wxOVERRIDE
     {
         m_value = value.GetString();
         return true;
     }
 
-    virtual bool GetValue( wxVariant &WXUNUSED(value) ) const { return true; }
+    virtual bool GetValue( wxVariant &WXUNUSED(value) ) const wxOVERRIDE { return true; }
 
 private:
     wxString m_value;
@@ -288,6 +292,7 @@ enum
     ID_ADD_MANY         = 203,
     ID_HIDE_ATTRIBUTES  = 204,
     ID_SHOW_ATTRIBUTES  = 205,
+    ID_MULTIPLE_SORT    = 206,
 
     // Fourth page.
     ID_DELETE_TREE_ITEM = 400,
@@ -322,6 +327,8 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_BUTTON( ID_ADD_MANY, MyFrame::OnAddMany)
     EVT_BUTTON( ID_HIDE_ATTRIBUTES, MyFrame::OnHideAttributes)
     EVT_BUTTON( ID_SHOW_ATTRIBUTES, MyFrame::OnShowAttributes)
+    EVT_CHECKBOX( ID_MULTIPLE_SORT, MyFrame::OnMultipleSort)
+    
     // Fourth page.
     EVT_BUTTON( ID_DELETE_TREE_ITEM, MyFrame::OnDeleteTreeItem )
     EVT_BUTTON( ID_DELETE_ALL_TREE_ITEMS, MyFrame::OnDeleteAllTreeItems )
@@ -344,6 +351,8 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_DATAVIEW_COLUMN_HEADER_CLICK(ID_MUSIC_CTRL, MyFrame::OnHeaderClick)
     EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK(ID_MUSIC_CTRL, MyFrame::OnHeaderRightClick)
     EVT_DATAVIEW_COLUMN_SORTED(ID_MUSIC_CTRL, MyFrame::OnSorted)
+    EVT_DATAVIEW_COLUMN_SORTED(ID_ATTR_CTRL, MyFrame::OnSortedList)
+    EVT_DATAVIEW_COLUMN_HEADER_CLICK(ID_ATTR_CTRL, MyFrame::OnHeaderClickList)
 
     EVT_DATAVIEW_ITEM_CONTEXT_MENU(ID_MUSIC_CTRL, MyFrame::OnContextMenu)
 
@@ -458,6 +467,8 @@ MyFrame::MyFrame(wxFrame *frame, const wxString &title, int x, int y, int w, int
     button_sizer2->Add( new wxButton( secondPanel, ID_ADD_MANY,    "Add 1000"),               0, wxALL, 10 );
     button_sizer2->Add( new wxButton( secondPanel, ID_HIDE_ATTRIBUTES,    "Hide attributes"), 0, wxALL, 10 );
     button_sizer2->Add( new wxButton( secondPanel, ID_SHOW_ATTRIBUTES,    "Show attributes"), 0, wxALL, 10 );
+    button_sizer2->Add( new wxCheckBox(secondPanel, ID_MULTIPLE_SORT, "Allow multisort"),
+                        wxSizerFlags().Centre().DoubleBorder() );
 
     wxSizer *secondPanelSz = new wxBoxSizer( wxVERTICAL );
     secondPanelSz->Add(m_ctrl[1], 1, wxGROW|wxALL, 5);
@@ -567,7 +578,8 @@ void MyFrame::BuildDataViewCtrl(wxPanel* parent, unsigned int nPanel, unsigned l
             // column 2 of the view control:
 
             wxDataViewSpinRenderer *sr =
-                new wxDataViewSpinRenderer( 0, 2010, wxDATAVIEW_CELL_EDITABLE, wxALIGN_RIGHT );
+                new wxDataViewSpinRenderer( 0, 2010, wxDATAVIEW_CELL_EDITABLE,
+                                            wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
             wxDataViewColumn *column2 =
                 new wxDataViewColumn( "year", sr, 2, 60, wxALIGN_LEFT,
                                       wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_REORDERABLE );
@@ -580,7 +592,8 @@ void MyFrame::BuildDataViewCtrl(wxPanel* parent, unsigned int nPanel, unsigned l
             choices.Add( "bad" );
             choices.Add( "lousy" );
             wxDataViewChoiceRenderer *c =
-                new wxDataViewChoiceRenderer( choices, wxDATAVIEW_CELL_EDITABLE, wxALIGN_RIGHT );
+                new wxDataViewChoiceRenderer( choices, wxDATAVIEW_CELL_EDITABLE,
+                                              wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
             wxDataViewColumn *column3 =
                 new wxDataViewColumn( "rating", c, 3, 100, wxALIGN_LEFT,
                                       wxDATAVIEW_COL_REORDERABLE | wxDATAVIEW_COL_RESIZABLE );
@@ -617,11 +630,15 @@ void MyFrame::BuildDataViewCtrl(wxPanel* parent, unsigned int nPanel, unsigned l
             m_ctrl[1]->AppendTextColumn("editable string",
                                         MyListModel::Col_EditableText,
                                         wxDATAVIEW_CELL_EDITABLE,
-                                        wxCOL_WIDTH_AUTOSIZE);
+                                        wxCOL_WIDTH_AUTOSIZE,
+                                        wxALIGN_NOT,
+                                        wxDATAVIEW_COL_SORTABLE);
             m_ctrl[1]->AppendIconTextColumn("icon",
                                             MyListModel::Col_IconText,
                                             wxDATAVIEW_CELL_EDITABLE,
-                                            wxCOL_WIDTH_AUTOSIZE);
+                                            wxCOL_WIDTH_AUTOSIZE,
+                                            wxALIGN_NOT,
+                                            wxDATAVIEW_COL_REORDERABLE | wxDATAVIEW_COL_SORTABLE);
 
             m_attributes =
                 new wxDataViewColumn("attributes",
@@ -629,7 +646,7 @@ void MyFrame::BuildDataViewCtrl(wxPanel* parent, unsigned int nPanel, unsigned l
                                      MyListModel::Col_TextWithAttr,
                                      wxCOL_WIDTH_AUTOSIZE,
                                      wxALIGN_RIGHT,
-                                     wxDATAVIEW_COL_REORDERABLE | wxDATAVIEW_COL_RESIZABLE );
+                                     wxDATAVIEW_COL_REORDERABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_SORTABLE);
             m_ctrl[1]->AppendColumn( m_attributes );
 
             m_ctrl[1]->AppendColumn(
@@ -847,8 +864,8 @@ void MyFrame::OnDropPossible( wxDataViewEvent &event )
 {
     wxDataViewItem item( event.GetItem() );
 
-    // only allow drags for item, not containers
-    if (m_music_model->IsContainer( item ) )
+    // only allow drags for item or background, not containers
+    if ( item.IsOk() && m_music_model->IsContainer( item ) )
         event.Veto();
 
     if (event.GetDataFormat() != wxDF_UNICODETEXT)
@@ -860,7 +877,7 @@ void MyFrame::OnDrop( wxDataViewEvent &event )
     wxDataViewItem item( event.GetItem() );
 
     // only allow drops for item, not containers
-    if (m_music_model->IsContainer( item ) )
+    if ( item.IsOk() && m_music_model->IsContainer( item ) )
     {
         event.Veto();
         return;
@@ -875,7 +892,10 @@ void MyFrame::OnDrop( wxDataViewEvent &event )
     wxTextDataObject obj;
     obj.SetData( wxDF_UNICODETEXT, event.GetDataSize(), event.GetDataBuffer() );
 
-    wxLogMessage( "Text dropped: %s", obj.GetText() );
+    if ( item.IsOk() )
+        wxLogMessage( "Text dropped on item %s: %s", m_music_model->GetTitle( item ), obj.GetText() );
+    else
+        wxLogMessage( "Text dropped on background: %s", obj.GetText() );
 }
 
 #endif // wxUSE_DRAG_AND_DROP
@@ -1090,6 +1110,34 @@ void MyFrame::OnHeaderRightClick( wxDataViewEvent &event )
     wxLogMessage( "wxEVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, Column position: %d", pos );
 }
 
+void MyFrame::OnSortedList( wxDataViewEvent &/*event*/)
+{
+    wxVector<wxDataViewColumn *> const columns = m_ctrl[1]->GetSortingColumns();
+    wxLogMessage( "wxEVT_DATAVIEW_COLUMN_SORTED using the following columns");
+
+    for ( wxVector<wxDataViewColumn *>::const_iterator it = columns.begin(),
+                                                      end = columns.end();
+          it != end;
+          ++it )
+    {
+        wxDataViewColumn* const col = *it;
+
+        wxLogMessage("\t%d. %s %s",
+                     col->GetModelColumn(),
+                     col->GetTitle(),
+                     col->IsSortOrderAscending() ? "ascending" : "descending");
+    }
+}
+
+void MyFrame::OnHeaderClickList( wxDataViewEvent &event )
+{
+    // Use control+click to toggle sorting by this column.
+    if ( wxGetKeyState(WXK_CONTROL) )
+        m_ctrl[1]->ToggleSortByColumn(event.GetColumn());
+    else
+        event.Skip();
+}
+
 void MyFrame::OnSorted( wxDataViewEvent &event )
 {
     int pos = m_ctrl[0]->GetColumnPosition( event.GetDataViewColumn() );
@@ -1180,5 +1228,11 @@ void MyFrame::OnAddTreeContainerItem(wxCommandEvent& WXUNUSED(event))
     wxDataViewItem selected = ctrl->GetSelection();
     if (ctrl->IsContainer(selected))
         ctrl->AppendContainer(selected, "Container", 0 );
+}
+
+void MyFrame::OnMultipleSort( wxCommandEvent &event )
+{
+    if ( !m_ctrl[1]->AllowMultiColumnSort(event.IsChecked()) )
+        wxLogMessage("Sorting by multiple columns not supported");
 }
 

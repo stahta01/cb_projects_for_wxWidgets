@@ -63,7 +63,7 @@ public:
     {
     }
 
-    virtual wxColour GetColour( int index ) const
+    virtual wxColour GetColour( int index ) const wxOVERRIDE
     {
         switch (index)
         {
@@ -89,7 +89,7 @@ public:
 
     virtual wxString ColourToString( const wxColour& col,
                                      int index,
-                                     int argFlags = 0 ) const
+                                     int argFlags = 0 ) const wxOVERRIDE
     {
         if ( index == (int)(m_choices.GetCount()-1) )
             return wxT("");
@@ -97,7 +97,7 @@ public:
         return wxColourProperty::ColourToString(col, index, argFlags);
     }
 
-    virtual int GetCustomColourIndex() const
+    virtual int GetCustomColourIndex() const wxOVERRIDE
     {
         return m_choices.GetCount()-2;
     }
@@ -515,7 +515,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         wxDateTime testTime = wxDateTime::Now();
         any = testTime;
         prop->SetValue(any);
-        if ( wxANY_AS(prop->GetValue().GetAny(), wxDateTime) != testTime )
+        if ( prop->GetValue().GetAny().As<wxDateTime>() != testTime )
             RT_FAILURE();
 #endif
 
@@ -523,10 +523,10 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         int testInt = 25537983;
         any = testInt;
         prop->SetValue(any);
-        if ( wxANY_AS(prop->GetValue().GetAny(), int) != testInt )
+        if ( prop->GetValue().GetAny().As<int>() != testInt )
             RT_FAILURE();
 #ifdef wxLongLong_t
-        if ( wxANY_AS(prop->GetValue().GetAny(), wxLongLong_t) != testInt )
+        if ( prop->GetValue().GetAny().As<wxLongLong_t>() != testInt )
             RT_FAILURE();
 #endif
 
@@ -534,7 +534,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         wxString testString = "asd934jfyn3";
         any = testString;
         prop->SetValue(any);
-        if ( wxANY_AS(prop->GetValue().GetAny(), wxString) != testString )
+        if ( prop->GetValue().GetAny().As<wxString>() != testString )
             RT_FAILURE();
 
         // Test with a type generated with IMPLEMENT_VARIANT_OBJECT()
@@ -542,7 +542,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         wxColour testCol = *wxCYAN;
         any = testCol;
         prop->SetValue(any);
-        if ( wxANY_AS(prop->GetValue().GetAny(), wxColour) != testCol )
+        if ( prop->GetValue().GetAny().As<wxColour>() != testCol )
             RT_FAILURE();
 
         // Test with a type with custom wxVariantData defined by
@@ -551,7 +551,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         wxPoint testPoint(199, 199);
         any = testPoint;
         prop->SetValue(any);
-        if ( wxANY_AS(prop->GetValue().GetAny(), wxPoint) != testPoint )
+        if ( prop->GetValue().GetAny().As<wxPoint>() != testPoint )
             RT_FAILURE();
     }
 
@@ -626,7 +626,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         pgman->SetPropertyValue(wxT("StringProperty"),wxT("Text1"));
         pgman->SetPropertyValue(wxT("IntProperty"),1024);
         pgman->SetPropertyValue(wxT("FloatProperty"),1024.0000000001);
-        pgman->SetPropertyValue(wxT("BoolProperty"),FALSE);
+        pgman->SetPropertyValue(wxT("BoolProperty"),false);
         pgman->SetPropertyValue(wxT("EnumProperty"),120);
         pgman->SetPropertyValue(wxT("ArrayStringProperty"),test_arrstr_1);
         wxColour emptyCol;
@@ -648,7 +648,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
             RT_FAILURE();
         if ( pg->GetPropertyValueAsDouble(wxT("FloatProperty")) != 1024.0000000001 )
             RT_FAILURE();
-        if ( pg->GetPropertyValueAsBool(wxT("BoolProperty")) != FALSE )
+        if ( pg->GetPropertyValueAsBool(wxT("BoolProperty")) != false )
             RT_FAILURE();
         if ( pg->GetPropertyValueAsLong(wxT("EnumProperty")) != 120 )
             RT_FAILURE();
@@ -678,7 +678,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         pg->SetPropertyValue(wxT("StringProperty"),wxT("Text2"));
         pg->SetPropertyValue(wxT("IntProperty"),512);
         pg->SetPropertyValue(wxT("FloatProperty"),512.0);
-        pg->SetPropertyValue(wxT("BoolProperty"),TRUE);
+        pg->SetPropertyValue(wxT("BoolProperty"),true);
         pg->SetPropertyValue(wxT("EnumProperty"),80);
         pg->SetPropertyValue(wxT("ArrayStringProperty"),test_arrstr_2);
         pg->SetPropertyValue(wxT("ColourProperty"),(wxObject*)wxWHITE);
@@ -699,7 +699,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
             RT_FAILURE();
         if ( pgman->GetPropertyValueAsDouble(wxT("FloatProperty")) != 512.0 )
             RT_FAILURE();
-        if ( pgman->GetPropertyValueAsBool(wxT("BoolProperty")) != TRUE )
+        if ( pgman->GetPropertyValueAsBool(wxT("BoolProperty")) != true )
             RT_FAILURE();
         if ( pgman->GetPropertyValueAsLong(wxT("EnumProperty")) != 80 )
             RT_FAILURE();
@@ -891,6 +891,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
             RT_FAILURE();
     }
 
+#if WXWIN_COMPATIBILITY_3_0
     {
         RT_START_TEST(DoubleToString)
 
@@ -911,6 +912,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         if ( wxPropertyGrid::DoubleToString(s, -0.000123, 3, true) != "0" )
             RT_FAILURE();
     }
+#endif
 
     {
         wxPropertyGridPage* page1;
@@ -1137,7 +1139,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
     {
         RT_START_TEST(SetPropertyBackgroundColour)
         wxCommandEvent evt;
-        evt.SetInt(1); // IsChecked() will return TRUE.
+        evt.SetInt(1); // IsChecked() will return true.
         evt.SetId(ID_COLOURSCHEME4);
         OnCatColours(evt);
         OnColourScheme(evt);
@@ -1172,8 +1174,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         pgman = m_pPropGridManager;
     }
 
-    /*{
-        // TODO: This test fails.
+    {
         RT_START_TEST(SetSplitterPosition)
 
         InitPanel();
@@ -1209,7 +1210,7 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         // Recreate the original grid
         CreateGrid( -1, -1 );
         pgman = m_pPropGridManager;
-    }*/
+    }
 
     {
         RT_START_TEST(HideProperty)
@@ -1331,12 +1332,12 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         RT_START_TEST(MultipleColumns)
 
         // Test with multiple columns
-        // FIXME: Does not display changes.
+        CreateGrid( -1, -1 );
+        FinalizeFramePosition();
+        pgman = m_pPropGridManager;
         for ( i=3; i<12; i+=2 )
         {
             RT_MSG(wxString::Format(wxT("%i columns"),(int)i));
-            CreateGrid( -1, -1 );
-            pgman = m_pPropGridManager;
             pgman->SetColumnCount(i);
             Refresh();
             Update();
@@ -1377,6 +1378,9 @@ bool FormMain::RunTests( bool fullTest, bool interactive )
         CreateGrid( -1, -1 );
         pgman = m_pPropGridManager;
     }
+
+    // Restore original grid size
+    FinalizeFramePosition();
 
     RT_START_TEST(none)
 
