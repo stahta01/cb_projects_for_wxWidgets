@@ -30,10 +30,6 @@
 		</VirtualTargets>
 		<Unit filename="dialogs.cpp" />
 		<Unit filename="dialogs.h" />
-		<Unit filename="generic_colrdlg.cpp" />
-		<Unit filename="generic_dirdlg.cpp" />
-		<Unit filename="generic_filedlg.cpp" />
-		<Unit filename="generic_fontdlg.cpp" />
 		<Unit filename="tip.xpm" />
 		<Extensions>
 			<code_completion />
