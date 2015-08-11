@@ -34,3 +34,4 @@ makefile.wat
 *.layout
 *_build_log.html
 *.exe
+*.res
