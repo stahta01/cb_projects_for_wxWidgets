@@ -30,3 +30,7 @@ makefile.wat
 *.plc
 *.bat
 *.zip
+*.depend
+*.layout
+*_build_log.html
+*.exe
