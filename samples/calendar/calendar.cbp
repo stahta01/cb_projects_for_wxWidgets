@@ -34,9 +34,6 @@
 		<ResourceCompiler>
 			<Add directory="%WXWIN%/include" />
 		</ResourceCompiler>
-		<Unit filename=".objs/win_gcc/calendar.res">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="calendar.cpp" />
 		<Unit filename="calendar.rc">
 			<Option compilerVar="WINDRES" />
