@@ -1,0 +1,3 @@
+[submodule "wx-config-win"]
+	path = wx-config-win
+	url = https://github.com/stahta01/wx-config-win.git
