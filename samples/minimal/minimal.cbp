@@ -21,7 +21,8 @@
 					<Add directory="$(WXWIN)/lib/$(WXCFG)" />
 				</Linker>
 				<ExtraCommands>
-					<Add before="cmd /c echo $(WXWIN)\lib\$(WXCFG)" />
+					<Add before="CMD /C echo $(WXWIN)/lib/$(WXCFG)" />
+					<Add before="CMD /C $(WX_CONFIG) --cflags" />
 				</ExtraCommands>
 				<Environment>
 					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />

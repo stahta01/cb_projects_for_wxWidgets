@@ -34,6 +34,10 @@
 		<Compiler>
 			<Add option="-DwxUSE_GUI=0" />
 		</Compiler>
+		<ExtraCommands>
+			<Add before="CMD /C echo $(WXWIN)/lib/$(WXCFG)" />
+			<Add before="CMD /C $(WX_CONFIG) --cflags" />
+		</ExtraCommands>
 		<Unit filename="console.cpp" />
 		<Extensions>
 			<code_completion />
