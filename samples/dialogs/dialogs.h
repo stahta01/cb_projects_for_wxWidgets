@@ -34,13 +34,7 @@ of MSW, MAC and OS2
     #define USE_DLL 0
 #endif
 
-#if defined(__WXWINCE__)
-    #define USE_WXWINCE 1
-#else
-    #define USE_WXWINCE 0
-#endif
-
-#if defined(__WXMSW__) && !USE_WXWINCE
+#if defined(__WXMSW__)
     #define USE_WXMSW 1
 #else
     #define USE_WXMSW 0
@@ -71,14 +65,13 @@ of MSW, MAC and OS2
 #define USE_DIRDLG_GENERIC \
     ((USE_WXMSW || USE_WXMAC) && USE_GENERIC_DIALOGS && wxUSE_DIRDLG)
 #define USE_FILEDLG_GENERIC \
-    ((((USE_WXMSW || USE_WXMAC || USE_WXGTK) \
-                    && USE_GENERIC_DIALOGS) || USE_WXWINCE) && wxUSE_FILEDLG)
+    ((USE_WXMSW || USE_WXMAC) && USE_GENERIC_DIALOGS  && wxUSE_FILEDLG)
 #define USE_FONTDLG_GENERIC \
     ((USE_WXMSW || USE_WXMACFONTDLG) && USE_GENERIC_DIALOGS && wxUSE_FONTDLG)
 
 // Turn USE_MODAL_PRESENTATION to 0 if there is any reason for not presenting difference
 // between modal and modeless dialogs (ie. not implemented it in your port yet)
-#if defined(__SMARTPHONE__) || !wxUSE_BOOKCTRL
+#if !wxUSE_BOOKCTRL
     #define USE_MODAL_PRESENTATION 0
 #else
     #define USE_MODAL_PRESENTATION 1
@@ -308,12 +301,34 @@ private:
 
 
 #if USE_SETTINGS_DIALOG
+
+// Struct containing properties edited by SettingsDialog.
+struct SettingsData
+{
+    SettingsData() :
+        m_loadLastOnStartup(false),
+        m_autoSaveInterval(1),
+        m_showToolTips(false),
+        m_applyTo(0),
+        m_bgStyle(0),
+        m_titleFontSize(10)
+    {
+    }
+
+    bool m_loadLastOnStartup;
+    int m_autoSaveInterval;
+    bool m_showToolTips;
+    int m_applyTo;
+    int m_bgStyle;
+    int m_titleFontSize;
+};
+
 // Property sheet dialog
 class SettingsDialog: public wxPropertySheetDialog
 {
     wxDECLARE_CLASS(SettingsDialog);
 public:
-    SettingsDialog(wxWindow* parent, int dialogType);
+    SettingsDialog(wxWindow* parent, SettingsData& settingsData, int dialogType);
     ~SettingsDialog();
 
     wxPanel* CreateGeneralSettingsPage(wxWindow* parent);
@@ -333,6 +348,8 @@ protected:
     };
 
     wxImageList*    m_imageList;
+
+    SettingsData& m_settingsData;
 
     wxDECLARE_EVENT_TABLE();
 };
@@ -468,9 +485,7 @@ public:
 
     void OnRequestUserAttention(wxCommandEvent& event);
 #if wxUSE_NOTIFICATION_MESSAGE
-    void OnNotifMsgAuto(wxCommandEvent& event);
-    void OnNotifMsgShow(wxCommandEvent& event);
-    void OnNotifMsgHide(wxCommandEvent& event);
+    void OnNotifMsg(wxCommandEvent& event);
 #endif // wxUSE_NOTIFICATION_MESSAGE
 
 #if wxUSE_RICHTOOLTIP
@@ -500,10 +515,6 @@ private:
                         *m_dlgReplace;
 #endif // wxUSE_FINDREPLDLG
 
-#if wxUSE_NOTIFICATION_MESSAGE
-    wxNotificationMessage *m_notifMsg;
-#endif // wxUSE_NOTIFICATION_MESSAGE
-
     wxColourData m_clrData;
 
     // just a window which we use to show the effect of font/colours selection
@@ -515,6 +526,10 @@ private:
     wxInfoBar *m_infoBarSimple,
               *m_infoBarAdvanced;
 #endif // wxUSE_INFOBAR
+
+#if USE_SETTINGS_DIALOG
+    SettingsData m_settingsData;
+#endif // USE_SETTINGS_DIALOG
 
     wxDECLARE_EVENT_TABLE();
 };
@@ -540,8 +555,10 @@ private:
 enum
 {
     DIALOGS_CHOOSE_COLOUR = wxID_HIGHEST,
+    DIALOGS_CHOOSE_COLOUR_ALPHA,
     DIALOGS_GET_COLOUR,
     DIALOGS_CHOOSE_COLOUR_GENERIC,
+    DIALOGS_CHOOSE_COLOUR_GENERIC_ALPHA,
     DIALOGS_CHOOSE_FONT,
     DIALOGS_CHOOSE_FONT_GENERIC,
     DIALOGS_MESSAGE_BOX,
@@ -589,9 +606,7 @@ enum
     DIALOGS_FIND,
     DIALOGS_REPLACE,
     DIALOGS_REQUEST,
-    DIALOGS_NOTIFY_AUTO,
-    DIALOGS_NOTIFY_SHOW,
-    DIALOGS_NOTIFY_HIDE,
+    DIALOGS_NOTIFY_MSG,
     DIALOGS_RICHTIP_DIALOG,
     DIALOGS_PROPERTY_SHEET,
     DIALOGS_PROPERTY_SHEET_TOOLBOOK,
