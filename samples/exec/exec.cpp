@@ -1091,7 +1091,7 @@ void MyFrame::OnFileExec(wxCommandEvent& WXUNUSED(event))
     wxString cmd;
     bool ok = false;
     const wxFileType::MessageParameters params(gs_lastFile);
-#ifdef __WXMSW__
+#if wxCHECK_VERSION(3, 1, 1) and defined(__WXMSW__)
     // try editor, for instance Notepad if extension is .xml
     cmd = ft->GetExpandedCommand(wxT("edit"), params);
     ok = !cmd.empty();
