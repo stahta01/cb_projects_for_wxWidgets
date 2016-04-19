@@ -42,7 +42,11 @@
 #endif // wxUSE_RIBBON
 
 #if wxUSE_AUI
-    #include "wx/xrc/xh_aui.h"
+    #if wxCHECK_VERSION(3, 1, 1)
+        #include "wx/xrc/xh_aui.h"
+    #else
+        #include "wx/xrc/xh_auinotbk.h"
+    #endif
     #include "wx/xrc/xh_auitoolb.h"
 #endif // wxUSE_AUI
 
@@ -91,7 +95,11 @@ bool MyApp::OnInit()
 #endif
 
 #if wxUSE_AUI
-    wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
+    #if wxCHECK_VERSION(3, 1, 1)
+        wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
+    #else
+        wxXmlResource::Get()->AddHandler(new wxAuiNotebookXmlHandler);
+    #endif
     wxXmlResource::Get()->AddHandler(new wxAuiToolBarXmlHandler);
 #endif
 
