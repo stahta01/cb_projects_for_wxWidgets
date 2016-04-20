@@ -1,3 +1,6 @@
 [submodule "wx-config-win"]
 	path = wx-config-win
 	url = https://github.com/stahta01/wx-config-win.git
+[submodule "wx_config_msys2"]
+	path = wx_config_msys2
+	url = https://github.com/stahta01/msys2_wx_config_exe.git
