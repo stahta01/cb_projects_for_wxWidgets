@@ -63,7 +63,6 @@
 		<Project filename="taskbar/taskbar.cbp" />
 		<Project filename="text/text.cbp" />
 		<Project filename="thread/thread.cbp" />
-		<Project filename="dialogs/dialogs.cbp" />
 		<Project filename="toolbar/toolbar.cbp" />
 		<Project filename="treectrl/treectrl.cbp" />
 		<Project filename="treelist/treelist.cbp" />
@@ -99,6 +98,7 @@
 		<Project filename="stc/stc.cbp" />
 		<Project filename="xrc/xrc.cbp" />
 		<Project filename="webview/webview.cbp" />
+		<Project filename="dialogs/dialogs.cbp" />
 		<Project filename="dll/dll_my_dll.cbp" />
 		<Project filename="dll/dll_sdk_exe.cbp" />
 		<Project filename="dll/dll_wx_exe.cbp" />
