@@ -904,7 +904,12 @@ MyPanel::MyPanel( wxFrame *frame, int x, int y, int w, int h )
     gauge_page_first_row_sizer->Add( gauge_sizer, 0, wxALL, 5 );
     wxBoxSizer *sz = new wxBoxSizer( wxVERTICAL );
     gauge_sizer->Add( sz );
-    m_gauge = new wxGauge( panel, wxID_ANY, 200, wxDefaultPosition, wxSize(155, 30), wxGA_HORIZONTAL|wxNO_BORDER|wxGA_TEXT );
+    m_gauge = new wxGauge( panel, wxID_ANY, 200, wxDefaultPosition, wxSize(155, 30),
+        wxGA_HORIZONTAL|wxNO_BORDER
+#if wxCHECK_VERSION(3, 1, 0)
+        |wxGA_TEXT
+#endif
+    );
     sz->Add( m_gauge, 0, wxALL, 10 );
     m_slider = new wxSlider( panel, ID_SLIDER, 0, 0, 200,
                              wxDefaultPosition, wxSize(155,wxDefaultCoord),
