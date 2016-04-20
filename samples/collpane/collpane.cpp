@@ -35,7 +35,9 @@
     #include "wx/textdlg.h"       // for wxGetTextFromUser
 #endif
 
-#include "wx/collheaderctrl.h"
+#if wxCHECK_VERSION(3, 1, 0)
+    #include "wx/collheaderctrl.h"
+#endif
 #include "wx/collpane.h"
 #include "wx/sizer.h"
 #include "wx/stattext.h"
