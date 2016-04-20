@@ -3,7 +3,6 @@
 	<Workspace title="wxWidgets Samples">
 		<Project filename="console/console.cbp" />
 		<Project filename="minimal/minimal.cbp" />
-		<Project filename="access/access.cbp" />
 		<Project filename="animate/animate.cbp" />
 		<Project filename="artprov/artprov.cbp" />
 		<Project filename="calendar/calendar.cbp" />
@@ -73,6 +72,7 @@
 		<Project filename="widgets/widgets.cbp" />
 		<Project filename="wizard/wizard.cbp" />
 		<Project filename="wrapsizer/wrapsizer.cbp" />
+		<Project filename="access/access.cbp" />
 		<Project filename="aui/aui.cbp" />
 		<Project filename="help/help.cbp" />
 		<Project filename="htlbox/htlbox.cbp" />
