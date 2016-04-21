@@ -79,7 +79,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="`$(WX_CONFIG) --libs base,core`" />
-					<Add directory="$(WXWIN)/lib/$(WXCFG)" />
 				</Linker>
 				<ExtraCommands>
 					<Add before="CMD /C echo $(WXWIN)/lib/$(WXCFG)" />

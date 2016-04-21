@@ -41,7 +41,6 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="`$(WX_CONFIG) --libs base`" />
-					<Add directory="$(WXWIN)/lib/$(WXCFG)" />
 				</Linker>
 				<Environment>
 					<Variable name="WX_CONFIG" value="wx-config.exe  --prefix=$(TARGET_COMPILER_DIR)" />
