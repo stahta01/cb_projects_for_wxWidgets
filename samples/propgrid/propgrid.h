@@ -11,6 +11,11 @@
 #ifndef _WX_SAMPLES_PROPGRID_PROPGRID_H_
 #define _WX_SAMPLES_PROPGRID_PROPGRID_H_
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // -----------------------------------------------------------------------
 
 class wxAdvImageFileProperty : public wxFileProperty

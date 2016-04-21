@@ -11,6 +11,11 @@
 #ifndef _WX_ISOSURF_H_
 #define _WX_ISOSURF_H_
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // we need OpenGL headers for GLfloat/GLint types used below
 #if defined(__WXMAC__)
 #   ifdef __DARWIN__

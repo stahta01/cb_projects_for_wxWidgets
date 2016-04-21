@@ -13,6 +13,11 @@
 
 #include "wx/glcanvas.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // the rendering context used by all GL canvases
 class TestGLContext : public wxGLContext
 {
