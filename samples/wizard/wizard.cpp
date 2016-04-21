@@ -40,6 +40,11 @@
 #include "wx/textctrl.h"
 #include "wx/wizard.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 #include "wiztest.xpm"
 #include "wiztest2.xpm"
 

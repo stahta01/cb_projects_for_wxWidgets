@@ -16,6 +16,11 @@
 #include "wx/toolbook.h"
 #include "wx/aui/auibook.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 #if wxUSE_LOG
     #define USE_LOG 1
 #else

@@ -17,6 +17,11 @@
 #include "wx/vector.h"
 #include "wx/image.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // This sample is written to build both with wxUSE_STD_IOSTREAM==0 and 1, which
 // somewhat complicates its code but is necessary in order to support building
 // it under all platforms and in all build configurations

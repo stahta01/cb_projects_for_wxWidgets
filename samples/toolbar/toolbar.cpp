@@ -34,6 +34,11 @@
 #include "wx/colordlg.h"
 #include "wx/srchctrl.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // define this to use XPMs everywhere (by default, BMPs are used under Win)
 // BMPs use less space, but aren't compiled into the executable on other platforms
 #ifdef __WINDOWS__

@@ -11,6 +11,11 @@
 #ifndef _WX_DRAGIMAGSAMPLE_
 #define _WX_DRAGIMAGSAMPLE_
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // derived classes
 
 class MyFrame;
