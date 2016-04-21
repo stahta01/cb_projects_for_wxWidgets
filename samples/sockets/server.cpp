@@ -31,6 +31,11 @@
 #include "wx/busyinfo.h"
 #include "wx/socket.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // this example is currently written to use only IP or only IPv6 sockets, it
 // should be extended to allow using either in the future
 #if wxUSE_IPV6

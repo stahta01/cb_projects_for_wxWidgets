@@ -35,6 +35,11 @@
     #include "wx/textdlg.h"
 #endif
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 #if !wxUSE_MENUS
     // nice try...
     #error "menu sample requires wxUSE_MENUS=1"
