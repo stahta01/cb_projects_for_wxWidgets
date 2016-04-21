@@ -32,6 +32,11 @@
 #include "wx/textfile.h"
 #include "wx/settings.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 #include "../sample.xpm"
 
 #ifdef __WXMAC__
