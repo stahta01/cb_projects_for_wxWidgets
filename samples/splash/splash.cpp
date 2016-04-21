@@ -33,6 +33,11 @@
 #include "wx/splash.h"
 #include "wx/mediactrl.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // ----------------------------------------------------------------------------
 // resources
 // ----------------------------------------------------------------------------

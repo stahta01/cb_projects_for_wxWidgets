@@ -21,6 +21,11 @@
     #include "wx/wx.h"
 #endif
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 #include "wx/html/htmlwin.h"
 #include "../../sample.xpm"
 
