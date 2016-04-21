@@ -30,6 +30,11 @@
 #include "wx/log.h"
 #include "wx/filedlg.h"
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 
 // ----------------------------------------------------------------------------
 // private classes
