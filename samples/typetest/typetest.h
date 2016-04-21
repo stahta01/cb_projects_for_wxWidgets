@@ -11,6 +11,11 @@
 #ifndef _WX_TYPETEST_H_
 #define _WX_TYPETEST_H_
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 // Define a new application type
 class MyApp: public wxApp
 {

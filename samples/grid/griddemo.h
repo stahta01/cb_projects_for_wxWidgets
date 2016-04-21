@@ -11,6 +11,11 @@
 #ifndef griddemo_h
 #define griddemo_h
 
+// wxOVERRIDE was added in wxWidgets version 3.1.0
+#ifndef wxOVERRIDE
+    #define wxOVERRIDE
+#endif
+
 class wxGrid;
 
 class GridApp : public wxApp
