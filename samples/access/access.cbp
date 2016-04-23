@@ -41,7 +41,7 @@
 					<Add option="`$(WX_CONFIG) --libs base,core`" />
 				</Linker>
 				<Environment>
-					<Variable name="WX_CONFIG" value="wx-config.exe  --prefix=$(TARGET_COMPILER_DIR)" />
+					<Variable name="WX_CONFIG" value="wx-config.exe  --shell=$(TARGET_COMPILER_DIR)..\usr\bin\sh.exe --prefix=$(TARGET_COMPILER_DIR)" />
 				</Environment>
 			</Target>
 		</Build>
