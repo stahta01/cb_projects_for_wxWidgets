@@ -8,11 +8,6 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 #define USE_GENERIC_TREECTRL 0
 
 #if USE_GENERIC_TREECTRL

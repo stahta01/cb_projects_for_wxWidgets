@@ -110,10 +110,8 @@ static void FillBitmaps(wxImageList *images, wxListCtrl *list,
     ART_ICON(wxART_QUIT)
     ART_ICON(wxART_FIND)
     ART_ICON(wxART_FIND_AND_REPLACE)
-#if wxCHECK_VERSION(3, 1, 0)
     ART_ICON(wxART_EDIT)
     ART_ICON(wxART_FULL_SCREEN)
-#endif
     ART_ICON(wxART_HARDDISK)
     ART_ICON(wxART_FLOPPY)
     ART_ICON(wxART_CDROM)

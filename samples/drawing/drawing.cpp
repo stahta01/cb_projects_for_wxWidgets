@@ -40,11 +40,6 @@
 #include "wx/metafile.h"
 #include "wx/settings.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 // ----------------------------------------------------------------------------
 // resources
 // ----------------------------------------------------------------------------
@@ -116,7 +111,8 @@ public:
     void Clip(bool clip) { m_clip = clip; Refresh(); }
 #if wxUSE_GRAPHICS_CONTEXT
     bool HasRenderer() const { return m_renderer != NULL; }
-    void UseGraphicRenderer(wxGraphicsRenderer* renderer);
+    void UseGraphicRenderer(wxGraphicsRenderer* renderer)
+        { m_renderer = renderer; Refresh(); }
     bool IsDefaultRenderer() const
     {   if ( !m_renderer ) return false;
         return m_renderer == wxGraphicsRenderer::GetDefaultRenderer();
@@ -1173,28 +1169,9 @@ void MyCanvas::DrawGraphics(wxGraphicsContext* gc)
 
     gc->PushState();
     gc->Translate(60, 400);
-    const wxString labelText(wxS("Scaled smiley inside a square"));
-    gc->DrawText(labelText, 0, 0);
-    // Center a bitmap horizontally
-    wxDouble textWidth;
-    gc->GetTextExtent(labelText, &textWidth, NULL);
-    const wxDouble rectWidth = 100;
-    wxDouble x0 = (textWidth - rectWidth) / 2;
-    gc->DrawRectangle(x0, BASE2, rectWidth, 100);
-    gc->DrawBitmap(m_smile_bmp, x0, BASE2, rectWidth, 100);
-    gc->PopState();
-
-    // Draw graphics bitmap and its subbitmap
-    gc->PushState();
-    gc->Translate(300, 400);
-    gc->DrawText(wxS("Smiley as a graphics bitmap"), 0, 0);
-
-    wxGraphicsBitmap gbmp1 = gc->CreateBitmap(m_smile_bmp);
-    gc->DrawBitmap(gbmp1, 0, BASE2, 50, 50);
-    int bmpw = m_smile_bmp.GetWidth();
-    int bmph = m_smile_bmp.GetHeight();
-    wxGraphicsBitmap gbmp2 = gc->CreateSubBitmap(gbmp1, 0, bmph/5, bmpw/2, bmph/2);
-    gc->DrawBitmap(gbmp2, 80, BASE2, 50, 50*(bmph/2)/(bmpw/2));
+    gc->DrawText("Scaled smiley inside a square", 0, 0);
+    gc->DrawRectangle(BASE2, BASE2, 100, 100);
+    gc->DrawBitmap(m_smile_bmp, BASE2, BASE2, 100, 100);
     gc->PopState();
 }
 #endif // wxUSE_GRAPHICS_CONTEXT
@@ -1930,27 +1907,6 @@ void MyCanvas::OnMouseUp(wxMouseEvent &event)
         }
     }
 }
-
-#if wxUSE_GRAPHICS_CONTEXT
-void MyCanvas::UseGraphicRenderer(wxGraphicsRenderer* renderer)
-{
-    m_renderer = renderer;
-    if (renderer)
-    {
-        int major, minor, micro;
-        renderer->GetVersion(&major, &minor, &micro);
-        wxString str = wxString::Format("Graphics renderer: %s %i.%i.%i",
-                         renderer->GetName().c_str(), major, minor, micro);
-        m_owner->SetStatusText(str, 1);
-    }
-    else
-    {
-        m_owner->SetStatusText(wxEmptyString, 1);
-    }
-
-    Refresh();
-}
-#endif // wxUSE_GRAPHICS_CONTEXT
 
 // ----------------------------------------------------------------------------
 // MyFrame

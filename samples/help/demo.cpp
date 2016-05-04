@@ -37,11 +37,6 @@
 #   include "wx/tooltip.h"
 #endif
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 // define this to 1 to use HTML help even under Windows (by default, Windows
 // version will use WinHelp).
 // Please also see samples/html/helpview.
@@ -536,7 +531,7 @@ void MyFrame::OnBestHelp(wxCommandEvent& event)
 #if USE_HTML_HELP
 void MyFrame::OnModalHtmlHelp(wxCommandEvent& WXUNUSED(event))
 {
-    wxHtmlModalHelp(this, wxT("doc.zip"), wxT("Introduction"));
+    wxHtmlModalHelp modalHelp(this, wxT("doc.zip"), wxT("Introduction"));
 }
 #endif
 

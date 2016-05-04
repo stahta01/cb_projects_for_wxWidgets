@@ -30,11 +30,6 @@
 #include "wx/dcsvg.h"
 #include "wx/vector.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 #include "bitmaps/new.xpm"
 #include "bitmaps/save.xpm"
 #include "bitmaps/help.xpm"

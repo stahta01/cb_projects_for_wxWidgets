@@ -34,11 +34,6 @@
 // we need to include the headers not included from wx/wx.h explicitly anyhow
 #include "wx/vscroll.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 // ----------------------------------------------------------------------------
 // resources
 // ----------------------------------------------------------------------------

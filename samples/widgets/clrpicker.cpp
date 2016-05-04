@@ -38,11 +38,6 @@
 #include "wx/checkbox.h"
 #include "wx/imaglist.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 #include "wx/clrpicker.h"
 #include "widgets.h"
 

@@ -50,7 +50,6 @@
     #include "wx/sizer.h"
 #endif
 
-#include "wx/filename.h"
 #include "wx/txtstrm.h"
 #include "wx/numdlg.h"
 #include "wx/textdlg.h"
@@ -65,11 +64,6 @@
 #ifdef __WINDOWS__
     #include "wx/dde.h"
 #endif // __WINDOWS__
-
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "../sample.xpm"
@@ -1084,7 +1078,7 @@ void MyFrame::OnFileExec(wxCommandEvent& WXUNUSED(event))
     if ( !AskUserForFileName() )
         return;
 
-    wxString ext = wxFileName(gs_lastFile).GetExt();
+    wxString ext = gs_lastFile.AfterLast(wxT('.'));
     wxFileType *ft = wxTheMimeTypesManager->GetFileTypeFromExtension(ext);
     if ( !ft )
     {
@@ -1094,15 +1088,8 @@ void MyFrame::OnFileExec(wxCommandEvent& WXUNUSED(event))
     }
 
     wxString cmd;
-    bool ok = false;
-    const wxFileType::MessageParameters params(gs_lastFile);
-#if wxCHECK_VERSION(3, 1, 1) and defined(__WXMSW__)
-    // try editor, for instance Notepad if extension is .xml
-    cmd = ft->GetExpandedCommand(wxT("edit"), params);
-    ok = !cmd.empty();
-#endif
-    if (!ok) // else try viewer
-        ok = ft->GetOpenCommand(&cmd, params);
+    bool ok = ft->GetOpenCommand(&cmd,
+                                 wxFileType::MessageParameters(gs_lastFile));
     delete ft;
     if ( !ok )
     {

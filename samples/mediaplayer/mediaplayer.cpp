@@ -65,11 +65,6 @@
 #include "wx/config.h"      // for native wxConfig
 #include "wx/vector.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 // Under MSW we have several different backends but when linking statically
 // they may be discarded by the linker (this definitely happens with MSVC) so
 // force linking them. You don't have to do this in your code if you don't plan

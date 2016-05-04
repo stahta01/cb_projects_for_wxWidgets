@@ -20,11 +20,6 @@
     #include "wx/dc.h"
 #endif
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 // derive from wxDelegateRendererNative and not wxRendererNative itself to be
 // able to only reimplement the methods we want to show and not all of them
 class MyDllRenderer : public wxDelegateRendererNative
