@@ -1,0 +1,10 @@
+Create wxWidgets cbp zipped file.txt
+
+pacman -S p7zip
+
+cd ~/devel/version_control/cb_projects_for_wxWidgets-git && \
+git checkout wxWidgets-3.1.0 && git status -uno
+
+cd samples
+7z a CB_wxWidgets-3.1.0_samples.zip samples.workspace
+7z a CB_wxWidgets-3.1.0_samples.zip *.cbp -r
