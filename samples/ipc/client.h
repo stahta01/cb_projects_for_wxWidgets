@@ -10,11 +10,6 @@
 
 #include "connection.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 #define ID_START         10000
 #define ID_DISCONNECT    10001
 #define ID_STARTADVISE    10002

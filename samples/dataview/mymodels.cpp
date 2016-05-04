@@ -470,8 +470,7 @@ bool MyListModel::GetAttrByRow( unsigned int row, unsigned int col,
         case Col_IconText:
             if ( !(row % 2) )
                 return false;
-            attr.SetColour(*wxYELLOW);
-            attr.SetBackgroundColour(*wxLIGHT_GREY);
+            attr.SetColour(*wxLIGHT_GREY);
             break;
 
         case Col_TextWithAttr:

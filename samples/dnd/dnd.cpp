@@ -26,11 +26,6 @@
 #include "wx/metafile.h"
 #include "wx/dirctrl.h"
 
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
-
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "../sample.xpm"
 #if wxUSE_DRAG_AND_DROP

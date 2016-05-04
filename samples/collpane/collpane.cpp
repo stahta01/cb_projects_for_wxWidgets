@@ -35,9 +35,7 @@
     #include "wx/textdlg.h"       // for wxGetTextFromUser
 #endif
 
-#if wxCHECK_VERSION(3, 1, 0)
-    #include "wx/collheaderctrl.h"
-#endif
+#include "wx/collheaderctrl.h"
 #include "wx/collpane.h"
 #include "wx/sizer.h"
 #include "wx/stattext.h"
@@ -45,11 +43,6 @@
 #include "wx/filepicker.h"
 #include "wx/fontpicker.h"
 #include "wx/aboutdlg.h"
-
-// wxOVERRIDE was added in wxWidgets version 3.1.0
-#ifndef wxOVERRIDE
-    #define wxOVERRIDE
-#endif
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "../sample.xpm"
@@ -110,9 +103,7 @@ public:
 
 private:
     wxCollapsiblePane *m_collPane;
-#if wxCHECK_VERSION(3, 1, 0)
     wxCollapsibleHeaderCtrl *m_collHeaderCtrl;
-#endif
     wxBoxSizer *m_paneSizer;
 
     wxDECLARE_EVENT_TABLE();
@@ -175,9 +166,7 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_UPDATE_UI(PANE_COLLAPSE, MyFrame::OnCollapseUpdateUI)
     EVT_UPDATE_UI(PANE_EXPAND, MyFrame::OnExpandUpdateUI)
 
-#if wxCHECK_VERSION(3, 1, 0)
     EVT_COLLAPSIBLEHEADER_CHANGED(wxID_ANY, MyFrame::OnCollapsibleHeaderChanged)
-#endif
 wxEND_EVENT_TABLE()
 
 // My frame constructor
@@ -226,15 +215,11 @@ MyFrame::MyFrame()
 
     win->SetSizer( m_paneSizer );
 
-#if wxCHECK_VERSION(3, 1, 0)
     m_collHeaderCtrl = new wxCollapsibleHeaderCtrl(this, wxID_ANY, "Collapsed wxCollapsibleHeaderCtrl");
-#endif
 
     wxSizer* const sizerTop = new wxBoxSizer(wxVERTICAL);
     sizerTop->Add(m_collPane, wxSizerFlags(1).Expand());
-#if wxCHECK_VERSION(3, 1, 0)
     sizerTop->Add(m_collHeaderCtrl);
-#endif
     SetSizer(sizerTop);
 }
 
@@ -296,7 +281,6 @@ void MyFrame::OnExpandUpdateUI(wxUpdateUIEvent& event)
     event.Enable(m_collPane->IsCollapsed());
 }
 
-#if wxCHECK_VERSION(3, 1, 0)
 void MyFrame::OnCollapsibleHeaderChanged(wxCommandEvent& WXUNUSED(event))
 {
     m_collHeaderCtrl->SetLabel
@@ -308,7 +292,6 @@ void MyFrame::OnCollapsibleHeaderChanged(wxCommandEvent& WXUNUSED(event))
             )
         );
 }
-#endif
 
 // ----------------------------------------------------------------------------
 // MyDialog
