@@ -43,7 +43,7 @@
 					<Add option="`$(WX_CONFIG) --libs base,core,adv`" />
 				</Linker>
 				<Environment>
-					<Variable name="WX_CONFIG" value="wx-config.exe  --shell=$(TARGET_COMPILER_DIR)..\usr\bin\sh.exe --wxconfig=$(TARGET_COMPILER_DIR)..\usr\local\bin\wx-config" />
+					<Variable name="WX_CONFIG" value="$(#WX_CONFIG_PATH)\wx-config.exe" />
 				</Environment>
 			</Target>
 		</Build>
