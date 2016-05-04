@@ -14,14 +14,14 @@
 class MyApp: public wxApp
 {
   public:
-    bool OnInit(void) wxOVERRIDE;
+    bool OnInit(void);
 };
 
 class MyCanvas: public wxScrolledWindow
 {
   public:
     MyCanvas(wxWindow *parent, const wxPoint& pos, const wxSize& size);
-    virtual void OnDraw(wxDC& dc) wxOVERRIDE;
+    virtual void OnDraw(wxDC& dc);
     void OnEvent(wxMouseEvent& event);
 
     wxDECLARE_EVENT_TABLE();
@@ -47,7 +47,7 @@ protected:
     wxSashLayoutWindow* m_leftWindow2;
     wxSashLayoutWindow* m_bottomWindow;
 
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 class MyChild: public wxMDIChildFrame
@@ -59,7 +59,7 @@ class MyChild: public wxMDIChildFrame
     void OnActivate(wxActivateEvent& event);
     void OnQuit(wxCommandEvent& event);
 
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 #define SASHTEST_QUIT        wxID_EXIT

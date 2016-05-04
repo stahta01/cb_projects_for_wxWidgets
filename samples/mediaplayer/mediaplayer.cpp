@@ -27,6 +27,8 @@
 //
 // 1) Certain backends can't play the same media file at the same time (MCI,
 //    Cocoa NSMovieView-Quicktime).
+// 2) Positioning on Mac Carbon is messed up if put in a sub-control like a
+//    Notebook (like this sample does).
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 // ============================================================================
@@ -145,14 +147,14 @@ public:
 #endif
 
 #if wxUSE_CMDLINE_PARSER
-    virtual void OnInitCmdLine(wxCmdLineParser& parser) wxOVERRIDE;
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser) wxOVERRIDE;
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
     // Files specified on the command line, if any.
     wxVector<wxString> m_params;
 #endif // wxUSE_CMDLINE_PARSER
 
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 
 protected:
     class wxMediaPlayerFrame* m_frame;
@@ -285,7 +287,7 @@ public:
     wxMediaPlayerTimer(wxMediaPlayerFrame* frame) {m_frame = frame;}
 
     // Called each time the timer's timeout expires
-    void Notify() wxOVERRIDE;
+    void Notify();
 
     wxMediaPlayerFrame* m_frame;       // The wxMediaPlayerFrame
 };
@@ -351,7 +353,7 @@ public:
     wxPlayListDropTarget(wxMediaPlayerListCtrl& list) : m_list(list) {}
     ~wxPlayListDropTarget(){}
         virtual bool OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
-                         const wxArrayString& files) wxOVERRIDE
+                         const wxArrayString& files)
     {
         for (size_t i = 0; i < files.GetCount(); ++i)
         {
@@ -408,11 +410,11 @@ const wxChar* wxGetMediaStateText(int nState)
 // handle of the application.  These routines in wx _DO NOT_ check to see if
 // the wxApp exists, and thus will crash the application if you try it.
 //
-// wxIMPLEMENT_APP does this, and also implements the platform-specific entry
-// routine, such as main or WinMain().  Use wxIMPLEMENT_APP_NO_MAIN if you do
+// IMPLEMENT_APP does this, and also implements the platform-specific entry
+// routine, such as main or WinMain().  Use IMPLEMENT_APP_NO_MAIN if you do
 // not desire this behaviour.
 // ----------------------------------------------------------------------------
-wxIMPLEMENT_APP(wxMediaPlayerApp);
+IMPLEMENT_APP(wxMediaPlayerApp)
 
 // ----------------------------------------------------------------------------
 // wxMediaPlayerApp command line parsing
@@ -589,7 +591,7 @@ wxMediaPlayerFrame::wxMediaPlayerFrame(const wxString& title)
     //  Then after your class declaration you put
     //  wxBEGIN_EVENT_TABLE(wxMediaPlayerFrame, wxFrame)
     //  EVT_XXX(XXX)...
-    //  wxEND_EVENT_TABLE()
+    // wxEND_EVENT_TABLE()
     //
     //  Where wxMediaPlayerFrame is the class with the DECLARE_MESSAGE_MAP
     //  in it.  EVT_XXX(XXX) are each of your handlers, such

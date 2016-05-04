@@ -4,6 +4,7 @@
 // Author:      Julian Smart
 // Modified by:
 // Created:     04/01/98
+// RCS-ID:      $Id$
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@
 // resources
 // ----------------------------------------------------------------------------
 
-// the application icon (under Windows it is in resources and even
+// the application icon (under Windows and OS/2 it is in resources and even
 // though we could still include the XPM here it would be unused)
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     #include "../sample.xpm"
@@ -53,7 +54,7 @@ public:
     // this one is called on application startup and is a good place for the app
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 // Define a new frame type: this is going to be our main frame
@@ -105,7 +106,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also implements the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation
@@ -164,13 +165,7 @@ MyFrame::MyFrame(const wxString& title)
 
     // ... and attach this menu bar to the frame
     SetMenuBar(menuBar);
-#else // !wxUSE_MENUS
-    // If menus are not available add a button to access the about box
-    wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-    wxButton* aboutBtn = new wxButton(this, wxID_ANY, "About...");
-    aboutBtn->Bind(wxEVT_BUTTON, &MyFrame::OnAbout, this);
-    sizer->Add(aboutBtn, wxSizerFlags().Center());
-#endif // wxUSE_MENUS/!wxUSE_MENUS
+#endif // wxUSE_MENUS
 
 #if wxUSE_STATUSBAR
     // create a status bar just for fun (by default with 1 pane only)

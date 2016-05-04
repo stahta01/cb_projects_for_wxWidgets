@@ -11,7 +11,7 @@
 #ifndef _WX_SAMPLE_WIDGETS_H_
 #define _WX_SAMPLE_WIDGETS_H_
 
-#if wxUSE_TREEBOOK
+#if wxUSE_TREEBOOK && !defined(__WXHANDHELD__)
     #include "wx/treebook.h"
     #define USE_TREEBOOK 1
     #define WidgetsBookCtrl wxTreebook
@@ -29,13 +29,18 @@
     #define wxWidgetsbookEventHandler(func) wxBookCtrlEventHandler(func)
 #endif
 
-#if wxUSE_LOG
+#if wxUSE_LOG && !defined(__WXHANDHELD__)
     #define USE_LOG 1
 #else
     #define USE_LOG 0
 #endif
 
-#define ICON_SIZE         16
+#if defined(__WXHANDHELD__)
+    #define USE_ICONS_IN_BOOK 0
+#else
+    #define USE_ICONS_IN_BOOK 1
+    #define ICON_SIZE         16
+#endif
 
 class WXDLLIMPEXP_FWD_CORE wxCheckBox;
 class WXDLLIMPEXP_FWD_CORE wxSizer;
@@ -78,45 +83,11 @@ enum
     ALL_CTRLS        = 1 << ALL_PAGE
 };
 
-typedef wxVector<wxWindow *> Widgets;
+typedef wxVector<wxControl *> Widgets;
 
 // ----------------------------------------------------------------------------
 // WidgetsPage: a book page demonstrating some widget
 // ----------------------------------------------------------------------------
-
-// struct to store common widget attributes
-struct WidgetAttributes
-{
-    WidgetAttributes()
-    {
-#if wxUSE_TOOLTIPS
-        m_tooltip = "This is a tooltip";
-#endif // wxUSE_TOOLTIPS
-        m_enabled = true;
-        m_show = true;
-        m_dir = wxLayout_LeftToRight;
-        m_variant = wxWINDOW_VARIANT_NORMAL;
-        m_cursor = *wxSTANDARD_CURSOR;
-        m_defaultFlags = wxBORDER_DEFAULT;
-    }
-
-#if wxUSE_TOOLTIPS
-   wxString m_tooltip;
-#endif // wxUSE_TOOLTIPS
-#if wxUSE_FONTDLG
-    wxFont m_font;
-#endif // wxUSE_FONTDLG
-    wxColour m_colFg;
-    wxColour m_colBg;
-    wxColour m_colPageBg;
-    bool m_enabled;
-    bool m_show;
-    wxLayoutDirection m_dir;
-    wxWindowVariant m_variant;
-    wxCursor m_cursor;
-    // the default flags, currently only contains border flags
-    int m_defaultFlags;
-};
 
 class WidgetsPage : public wxPanel
 {
@@ -126,7 +97,7 @@ public:
                 const char *const icon[]);
 
     // return the control shown by this page
-    virtual wxWindow *GetWidget() const = 0;
+    virtual wxControl *GetWidget() const = 0;
 
     // return the control shown by this page, if it supports text entry interface
     virtual wxTextEntryBase *GetTextEntry() const { return NULL; }
@@ -148,11 +119,8 @@ public:
     // this is currently used only to take into account the border flags
     virtual void RecreateWidget() = 0;
 
-    // apply current atrributes to the widget(s)
-    void SetUpWidget();
-
-    // the default attributes for the widget
-    static WidgetAttributes& GetAttrs();
+    // the default flags for the widget, currently only contains border flags
+    static int ms_defaultFlags;
 
 protected:
     // several helper functions for page creation

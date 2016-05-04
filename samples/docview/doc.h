@@ -80,8 +80,8 @@ class DrawingDocument : public wxDocument
 public:
     DrawingDocument() : wxDocument() { }
 
-    DocumentOstream& SaveObject(DocumentOstream& stream) wxOVERRIDE;
-    DocumentIstream& LoadObject(DocumentIstream& stream) wxOVERRIDE;
+    DocumentOstream& SaveObject(DocumentOstream& stream);
+    DocumentIstream& LoadObject(DocumentIstream& stream);
 
     // add a new segment to the document
     void AddDoodleSegment(const DoodleSegment& segment);
@@ -138,8 +138,8 @@ public:
     {
     }
 
-    virtual bool Do() wxOVERRIDE { return DoAdd(); }
-    virtual bool Undo() wxOVERRIDE { return DoRemove(); }
+    virtual bool Do() { return DoAdd(); }
+    virtual bool Undo() { return DoRemove(); }
 };
 
 // The command for removing the last segment
@@ -151,8 +151,8 @@ public:
     {
     }
 
-    virtual bool Do() wxOVERRIDE { return DoRemove(); }
-    virtual bool Undo() wxOVERRIDE { return DoAdd(); }
+    virtual bool Do() { return DoRemove(); }
+    virtual bool Undo() { return DoAdd(); }
 };
 
 
@@ -165,16 +165,16 @@ class wxTextDocument : public wxDocument
 public:
     wxTextDocument() : wxDocument() { }
 
-    virtual bool OnCreate(const wxString& path, long flags) wxOVERRIDE;
+    virtual bool OnCreate(const wxString& path, long flags);
 
     virtual wxTextCtrl* GetTextCtrl() const = 0;
 
-    virtual bool IsModified() const wxOVERRIDE;
-    virtual void Modify(bool mod) wxOVERRIDE;
+    virtual bool IsModified() const;
+    virtual void Modify(bool mod);
 
 protected:
-    virtual bool DoSaveDocument(const wxString& filename) wxOVERRIDE;
-    virtual bool DoOpenDocument(const wxString& filename) wxOVERRIDE;
+    virtual bool DoSaveDocument(const wxString& filename);
+    virtual bool DoOpenDocument(const wxString& filename);
 
     void OnTextChange(wxCommandEvent& event);
 
@@ -190,7 +190,7 @@ class TextEditDocument : public wxTextDocument
 {
 public:
     TextEditDocument() : wxTextDocument() { }
-    virtual wxTextCtrl* GetTextCtrl() const wxOVERRIDE;
+    virtual wxTextCtrl* GetTextCtrl() const;
 
     wxDECLARE_NO_COPY_CLASS(TextEditDocument);
     wxDECLARE_DYNAMIC_CLASS(TextEditDocument);
@@ -208,12 +208,12 @@ class ImageDocument : public wxDocument
 public:
     ImageDocument() : wxDocument() { }
 
-    virtual bool OnOpenDocument(const wxString& file) wxOVERRIDE;
+    virtual bool OnOpenDocument(const wxString& file);
 
     wxImage GetImage() const { return m_image; }
 
 protected:
-    virtual bool DoOpenDocument(const wxString& file) wxOVERRIDE;
+    virtual bool DoOpenDocument(const wxString& file);
 
 private:
     wxImage m_image;

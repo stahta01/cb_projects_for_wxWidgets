@@ -73,7 +73,7 @@ class MyApp : public wxApp
 {
 public:
     // 'Main program' equivalent: the program execution "starts" here
-    virtual bool OnInit() wxOVERRIDE
+    virtual bool OnInit()
     {
         if ( !wxApp::OnInit() )
             return false;
@@ -89,7 +89,7 @@ public:
     }
 
     // create the file system watcher here, because it needs an active loop
-    virtual void OnEventLoopEnter(wxEventLoopBase* WXUNUSED(loop)) wxOVERRIDE
+    virtual void OnEventLoopEnter(wxEventLoopBase* WXUNUSED(loop))
     {
         if ( m_frame->CreateWatcherIfNecessary() )
         {
@@ -98,7 +98,7 @@ public:
         }
     }
 
-    virtual void OnInitCmdLine(wxCmdLineParser& parser) wxOVERRIDE
+    virtual void OnInitCmdLine(wxCmdLineParser& parser)
     {
         wxApp::OnInitCmdLine(parser);
         parser.AddParam("directory to watch",
@@ -106,7 +106,7 @@ public:
                         wxCMD_LINE_PARAM_OPTIONAL);
     }
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser) wxOVERRIDE
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser)
     {
         if ( !wxApp::OnCmdLineParsed(parser) )
             return false;
@@ -129,7 +129,7 @@ private:
 // static object for many reasons) and also declares the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 
 // ============================================================================

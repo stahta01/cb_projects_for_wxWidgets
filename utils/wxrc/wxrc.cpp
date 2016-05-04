@@ -223,8 +223,8 @@ class XmlResApp : public wxAppConsole
 {
 public:
     // don't use builtin cmd line parsing:
-    virtual bool OnInit() wxOVERRIDE { return true; }
-    virtual int OnRun() wxOVERRIDE;
+    virtual bool OnInit() { return true; }
+    virtual int OnRun();
 
 private:
     void ParseParams(const wxCmdLineParser& cmdline);
@@ -254,7 +254,7 @@ private:
         void GenCPPHeader();
 };
 
-wxIMPLEMENT_APP_CONSOLE(XmlResApp);
+IMPLEMENT_APP_CONSOLE(XmlResApp)
 
 int XmlResApp::OnRun()
 {
@@ -1050,7 +1050,7 @@ bool XmlResApp::Validate()
     {
         wxLogError("Running RELAX NG validator failed.");
         wxLogError("Please install Jing (http://www.thaiopensource.com/relaxng/jing.html).");
-        wxLogError("See https://github.com/wxWidgets/wxWidgets/blob/master/misc/schema/README for more information.");
+        wxLogError("See http://svn.wxwidgets.org/svn/wx/wxWidgets/trunk/misc/schema/README for more information.");
         return false;
     }
 

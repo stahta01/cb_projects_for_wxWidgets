@@ -46,15 +46,15 @@ public:
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
 
-    virtual bool OnInit() wxOVERRIDE;
-    virtual int OnExit() wxOVERRIDE;
+    virtual bool OnInit();
+    virtual int OnExit();
 
 private:
     wxHtmlHelpController *help;
 };
 
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 
 bool MyApp::OnInit()

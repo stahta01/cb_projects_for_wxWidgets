@@ -253,7 +253,7 @@ void TestGLContext::DrawRotatedCube(float xangle, float yangle)
 // MyApp: the application object
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
 {

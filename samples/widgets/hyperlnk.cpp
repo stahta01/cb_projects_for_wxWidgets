@@ -79,11 +79,11 @@ public:
     HyperlinkWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~HyperlinkWidgetsPage() {}
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_hyperlink; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateHyperlink(); }
+    virtual wxControl *GetWidget() const { return m_hyperlink; }
+    virtual void RecreateWidget() { CreateHyperlink(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers

@@ -49,8 +49,8 @@ class MyApp : public wxApp
 public:
     MyApp() { Connect(wxEVT_IDLE, wxIdleEventHandler(MyApp::OnIdle)); }
 
-    virtual bool OnInit() wxOVERRIDE;
-    virtual int OnExit() wxOVERRIDE;
+    virtual bool OnInit();
+    virtual int OnExit();
 
 private:
     void OnIdle(wxIdleEvent& event);
@@ -61,11 +61,11 @@ private:
 class MyConnection : public MyConnectionBase
 {
 public:
-    virtual bool DoExecute(const void *data, size_t size, wxIPCFormat format) wxOVERRIDE;
-    virtual const void *Request(const wxString& item, size_t *size = NULL, wxIPCFormat format = wxIPC_TEXT) wxOVERRIDE;
-    virtual bool DoPoke(const wxString& item, const void* data, size_t size, wxIPCFormat format) wxOVERRIDE;
-    virtual bool OnAdvise(const wxString& topic, const wxString& item, const void *data, size_t size, wxIPCFormat format) wxOVERRIDE;
-    virtual bool OnDisconnect() wxOVERRIDE;
+    virtual bool DoExecute(const void *data, size_t size, wxIPCFormat format);
+    virtual const void *Request(const wxString& item, size_t *size = NULL, wxIPCFormat format = wxIPC_TEXT);
+    virtual bool DoPoke(const wxString& item, const void* data, size_t size, wxIPCFormat format);
+    virtual bool OnAdvise(const wxString& topic, const wxString& item, const void *data, size_t size, wxIPCFormat format);
+    virtual bool OnDisconnect();
 };
 
 class MyClient : public wxClient,
@@ -77,10 +77,10 @@ public:
 
     bool Connect(const wxString& sHost, const wxString& sService, const wxString& sTopic);
     void Disconnect();
-    wxConnectionBase *OnMakeConnection() wxOVERRIDE;
+    wxConnectionBase *OnMakeConnection();
     bool IsConnected() { return m_connection != NULL; };
 
-    virtual void Notify() wxOVERRIDE;
+    virtual void Notify();
 
     void StartNextTestIfNecessary();
 
@@ -107,7 +107,7 @@ private:
 // implementation
 // ============================================================================
 
-wxIMPLEMENT_APP_CONSOLE(MyApp);
+IMPLEMENT_APP_CONSOLE(MyApp)
 
 // ----------------------------------------------------------------------------
 // MyApp

@@ -43,7 +43,7 @@
 #endif
 
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ---------------------------------------------------------------------------
 // global variables

@@ -47,7 +47,7 @@ class DnDText : public wxTextDropTarget
 public:
     DnDText(wxListBox *pOwner) { m_pOwner = pOwner; }
 
-    virtual bool OnDropText(wxCoord x, wxCoord y, const wxString& text) wxOVERRIDE;
+    virtual bool OnDropText(wxCoord x, wxCoord y, const wxString& text);
 
 private:
     wxListBox *m_pOwner;
@@ -59,7 +59,7 @@ public:
     DnDFile(wxListBox *pOwner = NULL) { m_pOwner = pOwner; }
 
     virtual bool OnDropFiles(wxCoord x, wxCoord y,
-                             const wxArrayString& filenames) wxOVERRIDE;
+                             const wxArrayString& filenames);
 
 private:
     wxListBox *m_pOwner;
@@ -83,14 +83,14 @@ public:
 
     // URLs can't be moved, only copied
     virtual wxDragResult OnDragOver(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
-                                    wxDragResult WXUNUSED(def)) wxOVERRIDE
+                                    wxDragResult WXUNUSED(def))
         {
             return wxDragLink;  // At least IE 5.x needs wxDragLink, the
                                 // other browsers on MSW seem okay with it too.
         }
 
     // translate this to calls to OnDropURL() just for convenience
-    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def) wxOVERRIDE
+    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def)
     {
         if ( !GetData() )
             return wxDragNone;
@@ -110,10 +110,10 @@ public:
 class DnDApp : public wxApp
 {
 public:
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
-wxIMPLEMENT_APP(DnDApp);
+IMPLEMENT_APP(DnDApp)
 
 #if wxUSE_DRAG_AND_DROP || wxUSE_CLIPBOARD
 
@@ -378,8 +378,8 @@ public:
         wxLogMessage(wxT("DnDTriangularShape is being deleted"));
     }
 
-    virtual Kind GetKind() const wxOVERRIDE { return Triangle; }
-    virtual void Draw(wxDC& dc) wxOVERRIDE
+    virtual Kind GetKind() const { return Triangle; }
+    virtual void Draw(wxDC& dc)
     {
         DnDShape::Draw(dc);
 
@@ -415,8 +415,8 @@ public:
         wxLogMessage(wxT("DnDRectangularShape is being deleted"));
     }
 
-    virtual Kind GetKind() const wxOVERRIDE { return Rectangle; }
-    virtual void Draw(wxDC& dc) wxOVERRIDE
+    virtual Kind GetKind() const { return Rectangle; }
+    virtual void Draw(wxDC& dc)
     {
         DnDShape::Draw(dc);
 
@@ -451,8 +451,8 @@ public:
         wxLogMessage(wxT("DnDEllipticShape is being deleted"));
     }
 
-    virtual Kind GetKind() const wxOVERRIDE { return Ellipse; }
-    virtual void Draw(wxDC& dc) wxOVERRIDE
+    virtual Kind GetKind() const { return Ellipse; }
+    virtual void Draw(wxDC& dc)
     {
         DnDShape::Draw(dc);
 
@@ -529,12 +529,12 @@ public:
     // implement base class pure virtuals
     // ----------------------------------
 
-    virtual wxDataFormat GetPreferredFormat(Direction WXUNUSED(dir)) const wxOVERRIDE
+    virtual wxDataFormat GetPreferredFormat(Direction WXUNUSED(dir)) const
     {
         return m_formatShape;
     }
 
-    virtual size_t GetFormatCount(Direction dir) const wxOVERRIDE
+    virtual size_t GetFormatCount(Direction dir) const
     {
         // our custom format is supported by both GetData() and SetData()
         size_t nFormats = 1;
@@ -551,7 +551,7 @@ public:
         return nFormats;
     }
 
-    virtual void GetAllFormats(wxDataFormat *formats, Direction dir) const wxOVERRIDE
+    virtual void GetAllFormats(wxDataFormat *formats, Direction dir) const
     {
         formats[0] = m_formatShape;
         if ( dir == Get )
@@ -568,7 +568,7 @@ public:
         }
     }
 
-    virtual size_t GetDataSize(const wxDataFormat& format) const wxOVERRIDE
+    virtual size_t GetDataSize(const wxDataFormat& format) const
     {
         if ( format == m_formatShape )
         {
@@ -595,7 +595,7 @@ public:
         }
     }
 
-    virtual bool GetDataHere(const wxDataFormat& format, void *pBuf) const wxOVERRIDE
+    virtual bool GetDataHere(const wxDataFormat& format, void *pBuf) const
     {
         if ( format == m_formatShape )
         {
@@ -625,7 +625,7 @@ public:
     }
 
     virtual bool SetData(const wxDataFormat& format,
-                         size_t WXUNUSED(len), const void *buf) wxOVERRIDE
+                         size_t WXUNUSED(len), const void *buf)
     {
         wxCHECK_MSG( format == m_formatShape, false,
                      wxT( "unsupported format") );
@@ -674,8 +674,8 @@ public:
 
     DnDShape *GetShape() const;
 
-    virtual bool TransferDataToWindow() wxOVERRIDE;
-    virtual bool TransferDataFromWindow() wxOVERRIDE;
+    virtual bool TransferDataToWindow();
+    virtual bool TransferDataFromWindow();
 
     void OnColour(wxCommandEvent& event);
 
@@ -752,20 +752,20 @@ public:
     }
 
     // override base class (pure) virtuals
-    virtual wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def) wxOVERRIDE
+    virtual wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def)
     {
 #if wxUSE_STATUSBAR
         m_frame->SetStatusText(wxT("Mouse entered the frame"));
 #endif // wxUSE_STATUSBAR
         return OnDragOver(x, y, def);
     }
-    virtual void OnLeave() wxOVERRIDE
+    virtual void OnLeave()
     {
 #if wxUSE_STATUSBAR
         m_frame->SetStatusText(wxT("Mouse left the frame"));
 #endif // wxUSE_STATUSBAR
     }
-    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def) wxOVERRIDE
+    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def)
     {
         if ( !GetData() )
         {
@@ -1050,7 +1050,7 @@ DnDFrame::DnDFrame()
     wxBoxSizer *sizer = new wxBoxSizer( wxVERTICAL );
     sizer->Add(sizer_top, 1, wxEXPAND );
 #if wxUSE_LOG
-    sizer->Add(m_ctrlLog, 1, wxEXPAND);
+    sizer->Add(m_ctrlLog, 2, wxEXPAND);
     sizer->SetItemMinSize(m_ctrlLog, 450, 200);
 #endif // wxUSE_LOG
     sizer->AddSpacer(50);
@@ -1084,7 +1084,8 @@ void DnDFrame::OnPaint(wxPaintEvent& WXUNUSED(event))
     GetClientSize( &w, &h );
 
     wxPaintDC dc(this);
-    dc.SetFont( wxFontInfo(24).Family(wxFONTFAMILY_DECORATIVE).FaceName("charter") );
+    // dc.Clear(); -- this kills wxGTK
+    dc.SetFont( wxFont( 24, wxDECORATIVE, wxNORMAL, wxNORMAL, false, wxT("charter") ) );
     dc.DrawText( wxT("Drag text from here!"), 100, h-50 );
 }
 

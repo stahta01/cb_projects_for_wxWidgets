@@ -72,7 +72,7 @@ class MyApp : public wxApp
 {
 public:
     // override base class virtuals
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 class MyFrame : public wxFrame
@@ -148,7 +148,7 @@ public:
         SetSizerAndFit(mainSizer);
     }
 
-    virtual bool TransferDataFromWindow() wxOVERRIDE
+    virtual bool TransferDataFromWindow()
     {
         if ( !m_checkbox->GetValue() )
         {
@@ -315,8 +315,8 @@ public:
     }
 
     // implement wxWizardPage functions
-    virtual wxWizardPage *GetPrev() const wxOVERRIDE { return m_prev; }
-    virtual wxWizardPage *GetNext() const wxOVERRIDE
+    virtual wxWizardPage *GetPrev() const { return m_prev; }
+    virtual wxWizardPage *GetNext() const
     {
         return m_checkbox->GetValue() ? m_next->GetNext() : m_next;
     }
@@ -355,7 +355,7 @@ wxBEGIN_EVENT_TABLE(wxRadioboxPage, wxWizardPageSimple)
     EVT_WIZARD_CANCEL(wxID_ANY, wxRadioboxPage::OnWizardCancel)
 wxEND_EVENT_TABLE()
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ----------------------------------------------------------------------------
 // the application class

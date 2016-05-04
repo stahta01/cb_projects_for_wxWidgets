@@ -40,8 +40,8 @@ class MyApp: public wxApp
 {
 public:
   // implement base class virtuals
-  virtual bool OnInit() wxOVERRIDE;
-  virtual int OnExit() wxOVERRIDE;
+  virtual bool OnInit();
+  virtual int OnExit();
 };
 
 class MyFrame: public wxFrame
@@ -80,7 +80,7 @@ wxEND_EVENT_TABLE()
 // application
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // `Main program' equivalent, creating windows and returning main app frame
 bool MyApp::OnInit()
@@ -169,16 +169,11 @@ MyFrame::MyFrame()
 
     // child controls
     wxPanel *panel = new wxPanel(this);
-    wxStaticText* st = new wxStaticText(panel, wxID_ANY, wxT("These controls remember their values!"));
-    m_text = new wxTextCtrl(panel, wxID_ANY);
-    m_check = new wxCheckBox(panel, wxID_ANY, wxT("show welcome message box at startup"));
-
-    // put everything in a sizer
-    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-    sizer->Add(st, wxSizerFlags().Border(wxLEFT|wxBOTTOM|wxTOP, 10));
-    sizer->Add(m_text, wxSizerFlags().Border(wxLEFT|wxBOTTOM|wxRIGHT, 10).Expand());
-    sizer->Add(m_check, wxSizerFlags().Border(wxLEFT, 10));
-    panel->SetSizer(sizer);
+    (void)new wxStaticText(panel, wxID_ANY, wxT("These controls remember their values!"),
+                            wxPoint(10, 10), wxSize(300, 20));
+    m_text = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxPoint(10, 40), wxSize(300, 20));
+    m_check = new wxCheckBox(panel, wxID_ANY, wxT("show welcome message box at startup"),
+                            wxPoint(10, 70), wxSize(300, 20));
 
     // restore the control's values from the config
 

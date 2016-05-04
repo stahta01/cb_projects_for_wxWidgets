@@ -42,11 +42,11 @@
 class MyApp : public wxApp
 {
 public:
-    bool OnInit() wxOVERRIDE;
+    bool OnInit();
 };
 
-wxDECLARE_APP(MyApp);
-wxIMPLEMENT_APP(MyApp);
+DECLARE_APP(MyApp)
+IMPLEMENT_APP(MyApp)
 
 
 class wxSizeReportCtrl;

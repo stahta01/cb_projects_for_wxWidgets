@@ -42,11 +42,11 @@
 
 // main program
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // MyCanvas
 
-wxIMPLEMENT_CLASS(MyCanvas, wxScrolledWindow);
+IMPLEMENT_CLASS(MyCanvas, wxScrolledWindow)
 
 wxBEGIN_EVENT_TABLE(MyCanvas, wxScrolledWindow)
   EVT_PAINT(MyCanvas::OnPaint)
@@ -305,7 +305,7 @@ DragShape* MyCanvas::FindShape(const wxPoint& pt) const
 }
 
 // MyFrame
-wxIMPLEMENT_DYNAMIC_CLASS(MyFrame, wxFrame);
+IMPLEMENT_DYNAMIC_CLASS( MyFrame, wxFrame )
 
 wxBEGIN_EVENT_TABLE(MyFrame,wxFrame)
   EVT_MENU    (wxID_ABOUT, MyFrame::OnAbout)

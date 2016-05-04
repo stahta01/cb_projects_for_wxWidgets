@@ -56,7 +56,7 @@ public:
     // this one is called on application startup and is a good place for the app
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 // MyCanvas is a canvas on which we show the font sample
@@ -96,8 +96,6 @@ public:
     void OnQuit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
 
-    void OnGetBaseFont(wxCommandEvent& WXUNUSED(event))
-        { DoChangeFont(m_canvas->GetTextFont().GetBaseFont()); }
     void OnIncFont(wxCommandEvent& WXUNUSED(event)) { DoResizeFont(+2); }
     void OnDecFont(wxCommandEvent& WXUNUSED(event)) { DoResizeFont(-2); }
 
@@ -174,8 +172,6 @@ enum
     Font_IncSize,
     Font_DecSize,
 
-    Font_GetBaseFont,
-
     Font_Bold,
     Font_Light,
 
@@ -228,7 +224,6 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_MENU(Font_ViewMsg, MyFrame::OnViewMsg)
     EVT_MENU(Font_About, MyFrame::OnAbout)
 
-    EVT_MENU(Font_GetBaseFont, MyFrame::OnGetBaseFont)
     EVT_MENU(Font_IncSize, MyFrame::OnIncFont)
     EVT_MENU(Font_DecSize, MyFrame::OnDecFont)
 
@@ -272,7 +267,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also declares the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation
@@ -328,7 +323,6 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxMenu *menuFont = new wxMenu;
     menuFont->Append(Font_IncSize, wxT("&Increase font size by 2 points\tCtrl-I"));
     menuFont->Append(Font_DecSize, wxT("&Decrease font size by 2 points\tCtrl-D"));
-    menuFont->Append(Font_GetBaseFont, wxT("Use &base version of the font\tCtrl-0"));
     menuFont->AppendSeparator();
     menuFont->AppendCheckItem(Font_Bold, wxT("&Bold\tCtrl-B"), wxT("Toggle bold state"));
     menuFont->AppendCheckItem(Font_Light, wxT("&Light\tCtrl-L"), wxT("Toggle light state"));
@@ -432,7 +426,7 @@ public:
 
 protected:
     virtual bool OnFontEncoding(const wxString& facename,
-                                const wxString& encoding) wxOVERRIDE
+                                const wxString& encoding)
     {
         wxString text;
         text.Printf(wxT("Encoding %u: %s (available in facename '%s')\n"),
@@ -468,7 +462,7 @@ public:
         { return m_facenames; }
 
 protected:
-    virtual bool OnFacename(const wxString& facename) wxOVERRIDE
+    virtual bool OnFacename(const wxString& facename)
     {
         m_facenames.Add(facename);
         return true;

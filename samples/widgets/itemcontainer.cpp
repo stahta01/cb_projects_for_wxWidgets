@@ -68,13 +68,7 @@ private:
 ItemContainerWidgetsPage::ItemContainerWidgetsPage(WidgetsBookCtrl *book,
                                                    wxImageList *image_list,
                                                    const char *const icon[])
-: WidgetsPage(book, image_list, icon)
-#if defined(__WXMSW__) || defined(__WXGTK__)
-// Reference data needs to be sorted in a dictionary order
-// since control's items are sorted in this order too.
-, m_itemsSorted(wxDictionaryStringSortAscending)
-#endif // __WXMSW__ || __WXGTK__
-, m_trackedDataObjects(0)
+: WidgetsPage(book, image_list, icon), m_trackedDataObjects(0)
 {
     m_items.Add(wxT("This"));
     m_items.Add(wxT("is"));
@@ -272,7 +266,8 @@ void ItemContainerWidgetsPage::OnButtonTestItemContainer(wxCommandEvent&)
 
     StartTest(wxT("Append some items with data objects"));
     wxClientData **objects = new wxClientData *[m_items.GetCount()];
-    for ( unsigned i = 0; i < m_items.GetCount(); ++i )
+    unsigned i;
+    for ( i = 0; i < m_items.GetCount(); ++i )
         objects[i] = CreateClientData(i);
     m_container->Append(m_items, objects);
     EndTest(expected_result);
@@ -280,19 +275,19 @@ void ItemContainerWidgetsPage::OnButtonTestItemContainer(wxCommandEvent&)
 
     StartTest(wxT("Append some items with data"));
     void **data = new void *[m_items.GetCount()];
-    for ( unsigned i = 0; i < m_items.GetCount(); ++i )
+    for ( i = 0; i < m_items.GetCount(); ++i )
         data[i] = wxUIntToPtr(i);
     m_container->Append(m_items, data);
     EndTest(expected_result);
     delete[] data;
 
     StartTest(wxT("Append some items with data, one by one"));
-    for ( unsigned i = 0; i < m_items.GetCount(); ++i )
+    for ( i = 0; i < m_items.GetCount(); ++i )
         m_container->Append(m_items[i], wxUIntToPtr(i));
     EndTest(expected_result);
 
     StartTest(wxT("Append some items with data objects, one by one"));
-    for ( unsigned i = 0; i < m_items.GetCount(); ++i )
+    for ( i = 0; i < m_items.GetCount(); ++i )
         m_container->Append(m_items[i], CreateClientData(i));
     EndTest(expected_result);
 

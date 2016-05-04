@@ -56,7 +56,7 @@
 class MyApp : public wxApp
 {
 public:
-  virtual bool OnInit() wxOVERRIDE;
+  virtual bool OnInit();
 };
 
 // Define a new frame type: this is going to be our main frame
@@ -142,7 +142,7 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_SOCKET(SOCKET_ID,  MyFrame::OnSocketEvent)
 wxEND_EVENT_TABLE()
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 
 // ==========================================================================

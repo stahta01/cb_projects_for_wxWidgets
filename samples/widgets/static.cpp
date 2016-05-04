@@ -93,8 +93,8 @@ public:
     StaticWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~StaticWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_statText; }
-    virtual Widgets GetWidgets() const wxOVERRIDE
+    virtual wxControl *GetWidget() const { return m_statText; }
+    virtual Widgets GetWidgets() const
     {
         Widgets widgets;
         widgets.push_back(m_sizerStatBox->GetStaticBox());
@@ -108,10 +108,10 @@ public:
 
         return widgets;
     }
-    virtual void RecreateWidget() wxOVERRIDE { CreateStatic(); }
+    virtual void RecreateWidget() { CreateStatic(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers
@@ -395,8 +395,8 @@ void StaticWidgetsPage::CreateStatic()
     }
 
     int flagsBox = 0,
-        flagsText = GetAttrs().m_defaultFlags,
-        flagsDummyText = GetAttrs().m_defaultFlags;
+        flagsText = ms_defaultFlags,
+        flagsDummyText = ms_defaultFlags;
 
     if ( !m_chkAutoResize->GetValue() )
     {

@@ -71,11 +71,11 @@ public:
 protected:
     // override this method to return data to be shown in the listbox (this is
     // mandatory)
-    virtual wxString OnGetItem(size_t n) const wxOVERRIDE;
+    virtual wxString OnGetItem(size_t n) const;
 
     // change the appearance by overriding these functions (this is optional)
-    virtual void OnDrawSeparator(wxDC& dc, wxRect& rect, size_t n) const wxOVERRIDE;
-    virtual wxColour GetSelectedTextColour(const wxColour& colFg) const wxOVERRIDE;
+    virtual void OnDrawSeparator(wxDC& dc, wxRect& rect, size_t n) const;
+    virtual wxColour GetSelectedTextColour(const wxColour& colFg) const;
 
     // flag telling us whether we should use fg colour even for the selected
     // item
@@ -152,7 +152,7 @@ private:
 class MyApp : public wxApp
 {
 public:
-    virtual bool OnInit() wxOVERRIDE { (new MyFrame())->Show(); return true; }
+    virtual bool OnInit() { (new MyFrame())->Show(); return true; }
 };
 
 // ----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
 
 wxEND_EVENT_TABLE()
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // MyFrame
@@ -557,7 +557,7 @@ void MyFrame::OnLboxSelect(wxCommandEvent& event)
 // MyHtmlListBox
 // ============================================================================
 
-wxIMPLEMENT_DYNAMIC_CLASS(MyHtmlListBox, wxHtmlListBox);
+IMPLEMENT_DYNAMIC_CLASS(MyHtmlListBox, wxHtmlListBox)
 
 MyHtmlListBox::MyHtmlListBox(wxWindow *parent, bool multi)
              : wxHtmlListBox(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize,

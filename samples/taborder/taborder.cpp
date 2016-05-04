@@ -78,7 +78,7 @@ enum
 class MyApp : public wxApp
 {
 public:
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 // and the main sample window
@@ -166,7 +166,7 @@ private:
 // MyApp
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
 {

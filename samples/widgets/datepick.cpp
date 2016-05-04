@@ -70,11 +70,11 @@ public:
     DatePickerWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~DatePickerWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_datePicker; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateDatePicker(); }
+    virtual wxControl *GetWidget() const { return m_datePicker; }
+    virtual void RecreateWidget() { CreateDatePicker(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers

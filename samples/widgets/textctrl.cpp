@@ -138,12 +138,12 @@ public:
     TextWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~TextWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_text; }
-    virtual wxTextEntryBase *GetTextEntry() const wxOVERRIDE { return m_text; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateText(); }
+    virtual wxControl *GetWidget() const { return m_text; }
+    virtual wxTextEntryBase *GetTextEntry() const { return m_text; }
+    virtual void RecreateWidget() { CreateText(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // create an info text contorl
@@ -631,7 +631,7 @@ void TextWidgetsPage::Reset()
 
 void TextWidgetsPage::CreateText()
 {
-    int flags = GetAttrs().m_defaultFlags;
+    int flags = ms_defaultFlags;
     switch ( m_radioTextLines->GetSelection() )
     {
         default:

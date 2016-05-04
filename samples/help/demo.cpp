@@ -75,7 +75,7 @@
 #endif
 
 // ----------------------------------------------------------------------------
-// resources
+// ressources
 // ----------------------------------------------------------------------------
 // the application icon
 #ifndef wxHAS_IMAGES_IN_RESOURCES
@@ -96,10 +96,10 @@ public:
     // this one is called on application startup and is a good place for the app
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 
     // do some clean up here
-    virtual int OnExit() wxOVERRIDE;
+    virtual int OnExit();
 };
 
 // Define a new frame type: this is going to be our main frame
@@ -273,7 +273,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also declares the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation

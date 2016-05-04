@@ -88,11 +88,11 @@ public:
     BookWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist, const char *const icon[]);
     virtual ~BookWidgetsPage();
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_book; }
-    virtual void RecreateWidget() wxOVERRIDE { RecreateBook(); }
+    virtual wxControl *GetWidget() const { return m_book; }
+    virtual void RecreateWidget() { RecreateBook(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers
@@ -121,8 +121,10 @@ protected:
     void RecreateBook();
     virtual wxBookCtrlBase *CreateBook(long flags) = 0;
 
+#if USE_ICONS_IN_BOOK
     // create or destroy the image list
     void CreateImageList();
+#endif // USE_ICONS_IN_BOOK
 
     // create a new page
     wxWindow *CreateNewPage();
@@ -153,8 +155,10 @@ protected:
     wxBookCtrlBase *m_book;
     wxSizer *m_sizerBook;
 
+#if USE_ICONS_IN_BOOK
     // the image list for our book
     wxImageList *m_imageList;
+#endif // USE_ICONS_IN_BOOK
 
 private:
     wxDECLARE_EVENT_TABLE();
@@ -192,7 +196,9 @@ BookWidgetsPage::BookWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist, c
 {
     // init everything
     m_chkImages = NULL;
+#if USE_ICONS_IN_BOOK
     m_imageList = NULL;
+#endif // USE_ICONS_IN_BOOK
 
     m_book = NULL;
     m_radioOrient = NULL;
@@ -283,14 +289,18 @@ void BookWidgetsPage::CreateContent()
 
     // final initializations
     Reset();
+#if USE_ICONS_IN_BOOK
     CreateImageList();
+#endif // USE_ICONS_IN_BOOK
 
     SetSizer(sizerTop);
 }
 
 BookWidgetsPage::~BookWidgetsPage()
 {
+#if USE_ICONS_IN_BOOK
     delete m_imageList;
+#endif // USE_ICONS_IN_BOOK
 }
 
 // ----------------------------------------------------------------------------
@@ -303,6 +313,7 @@ void BookWidgetsPage::Reset()
     m_radioOrient->SetSelection(Orient_Top);
 }
 
+#if USE_ICONS_IN_BOOK
 void BookWidgetsPage::CreateImageList()
 {
     if ( m_chkImages->GetValue() )
@@ -330,6 +341,7 @@ void BookWidgetsPage::CreateImageList()
     // it would be logical if this removed the image list from book, under
     // MSW it crashes instead - FIXME
 }
+#endif // USE_ICONS_IN_BOOK
 
 void BookWidgetsPage::RecreateBook()
 {
@@ -337,7 +349,7 @@ void BookWidgetsPage::RecreateBook()
     if(!m_radioOrient)
         return;
 
-    int flags = GetAttrs().m_defaultFlags;
+    int flags = ms_defaultFlags;
 
     switch ( m_radioOrient->GetSelection() )
     {
@@ -366,7 +378,9 @@ void BookWidgetsPage::RecreateBook()
 
     m_book = CreateBook(flags);
 
+#if USE_ICONS_IN_BOOK
     CreateImageList();
+#endif // USE_ICONS_IN_BOOK
 
     if ( oldBook )
     {
@@ -415,6 +429,7 @@ int BookWidgetsPage::GetTextValue(wxTextCtrl *text) const
 
 int BookWidgetsPage::GetIconIndex() const
 {
+#if USE_ICONS_IN_BOOK
     if ( m_imageList )
     {
        int nImages = m_imageList->GetImageCount();
@@ -423,6 +438,7 @@ int BookWidgetsPage::GetIconIndex() const
            return m_book->GetPageCount() % nImages;
        }
     }
+#endif // USE_ICONS_IN_BOOK
 
     return -1;
 }
@@ -544,7 +560,7 @@ protected:
     void OnPageChanged(wxNotebookEvent& event);
 
     // (re)create book
-    virtual wxBookCtrlBase *CreateBook(long flags) wxOVERRIDE
+    virtual wxBookCtrlBase *CreateBook(long flags)
     {
         return new wxNotebook(this, BookPage_Book,
                               wxDefaultPosition, wxDefaultSize,
@@ -625,7 +641,7 @@ protected:
     void OnPageChanged(wxListbookEvent& event);
 
     // (re)create book
-    virtual wxBookCtrlBase *CreateBook(long flags) wxOVERRIDE
+    virtual wxBookCtrlBase *CreateBook(long flags)
     {
         return new wxListbook(this, BookPage_Book,
                               wxDefaultPosition, wxDefaultSize,
@@ -698,7 +714,7 @@ protected:
     void OnPageChanged(wxChoicebookEvent& event);
 
     // (re)create book
-    virtual wxBookCtrlBase *CreateBook(long flags) wxOVERRIDE
+    virtual wxBookCtrlBase *CreateBook(long flags)
     {
         return new wxChoicebook(this, BookPage_Book,
                                 wxDefaultPosition, wxDefaultSize,

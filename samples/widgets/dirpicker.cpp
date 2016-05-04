@@ -67,11 +67,11 @@ public:
     DirPickerWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~DirPickerWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_dirPicker; }
-    virtual void RecreateWidget() wxOVERRIDE { RecreatePicker(); }
+    virtual wxControl *GetWidget() const { return m_dirPicker; }
+    virtual void RecreateWidget() { RecreatePicker(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
 

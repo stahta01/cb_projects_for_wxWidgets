@@ -66,11 +66,11 @@ public:
     TimePickerWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~TimePickerWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_timePicker; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateTimePicker(); }
+    virtual wxControl *GetWidget() const { return m_timePicker; }
+    virtual void RecreateWidget() { CreateTimePicker(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers

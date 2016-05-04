@@ -94,15 +94,15 @@ public:
     {
     }
 
-    virtual bool CanEditProperties(wxRichTextField* WXUNUSED(obj)) const wxOVERRIDE { return true; }
-    virtual bool EditProperties(wxRichTextField* WXUNUSED(obj), wxWindow* WXUNUSED(parent), wxRichTextBuffer* WXUNUSED(buffer)) wxOVERRIDE
+    virtual bool CanEditProperties(wxRichTextField* WXUNUSED(obj)) const { return true; }
+    virtual bool EditProperties(wxRichTextField* WXUNUSED(obj), wxWindow* WXUNUSED(parent), wxRichTextBuffer* WXUNUSED(buffer))
     {
         wxString label = GetLabel();
         wxMessageBox(wxString::Format(wxT("Editing %s"), label.c_str()));
         return true;
     }
 
-    virtual wxString GetPropertiesMenuLabel(wxRichTextField* WXUNUSED(obj)) const wxOVERRIDE
+    virtual wxString GetPropertiesMenuLabel(wxRichTextField* WXUNUSED(obj)) const
     {
         return GetLabel();
     }
@@ -117,7 +117,7 @@ public:
     {
     }
 
-    virtual bool UpdateField(wxRichTextBuffer* buffer, wxRichTextField* obj) wxOVERRIDE
+    virtual bool UpdateField(wxRichTextBuffer* buffer, wxRichTextField* obj)
     {
         if (buffer)
         {
@@ -127,7 +127,7 @@ public:
             attr.SetLineSpacing(10);
             obj->SetAttributes(attr);
         }
-        obj->DeleteChildren();
+        obj->GetChildren().Clear();
         wxRichTextParagraph* para = new wxRichTextParagraph;
         wxRichTextPlainText* text = new wxRichTextPlainText(GetLabel());
         para->AppendChild(text);
@@ -169,19 +169,19 @@ public:
         Prepares the content just before insertion (or after buffer reset). Called by the same function in wxRichTextBuffer.
         Currently is only called if undo mode is on.
     */
-    virtual void PrepareContent(wxRichTextParagraphLayoutBox& container) wxOVERRIDE;
+    virtual void PrepareContent(wxRichTextParagraphLayoutBox& container);
 
     /**
         Can we delete this range?
         Sends an event to the control.
     */
-    virtual bool CanDeleteRange(wxRichTextParagraphLayoutBox& container, const wxRichTextRange& range) const wxOVERRIDE;
+    virtual bool CanDeleteRange(wxRichTextParagraphLayoutBox& container, const wxRichTextRange& range) const;
 
     /**
         Can we insert content at this position?
         Sends an event to the control.
     */
-    virtual bool CanInsertContent(wxRichTextParagraphLayoutBox& container, long pos) const wxOVERRIDE;
+    virtual bool CanInsertContent(wxRichTextParagraphLayoutBox& container, long pos) const;
 
     /**
         Finds a table,  either selected or near the cursor
@@ -207,8 +207,8 @@ public:
     // this one is called on application startup and is a good place for the app
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
-    virtual bool OnInit() wxOVERRIDE;
-    virtual int OnExit() wxOVERRIDE;
+    virtual bool OnInit();
+    virtual int OnExit();
 
     void CreateStyles();
 
@@ -318,7 +318,7 @@ public:
 protected:
 
     // Forward command events to the current rich text control, if any
-    bool ProcessEvent(wxEvent& event) wxOVERRIDE;
+    bool ProcessEvent(wxEvent& event);
 
     // Write text
     void WriteInitialText();
@@ -501,7 +501,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also implements the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation
@@ -606,8 +606,8 @@ void MyApp::CreateStyles()
 {
     // Paragraph styles
 
-    wxFont romanFont(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
-    wxFont swissFont(wxFontInfo(12).Family(wxFONTFAMILY_SWISS));
+    wxFont romanFont(12, wxROMAN, wxNORMAL, wxNORMAL);
+    wxFont swissFont(12, wxSWISS, wxNORMAL, wxNORMAL);
 
     wxRichTextParagraphStyleDefinition* normalPara = new wxRichTextParagraphStyleDefinition(wxT("Normal"));
     wxRichTextAttr normalAttr;
@@ -870,7 +870,7 @@ MyFrame::MyFrame(const wxString& title, wxWindowID id, const wxPoint& pos,
     SetMenuBar(menuBar);
 
     // create a status bar just for fun (by default with 1 pane only)
-    // but don't create it on limited screen space (mobile device)
+    // but don't create it on limited screen space (WinCE)
     bool is_pda = wxSystemSettings::GetScreenType() <= wxSYS_SCREEN_PDA;
 
 #if wxUSE_STATUSBAR
@@ -929,14 +929,14 @@ MyFrame::MyFrame(const wxString& title, wxWindowID id, const wxPoint& pos,
     wxSplitterWindow* splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
     sizer->Add(splitter, 1, wxEXPAND);
 
-    wxFont textFont = wxFont(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
-    wxFont boldFont = wxFont(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
-    wxFont italicFont = wxFont(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN).Italic());
+    wxFont textFont = wxFont(12, wxROMAN, wxNORMAL, wxNORMAL);
+    wxFont boldFont = wxFont(12, wxROMAN, wxNORMAL, wxBOLD);
+    wxFont italicFont = wxFont(12, wxROMAN, wxITALIC, wxNORMAL);
 
     m_richTextCtrl = new MyRichTextCtrl(splitter, ID_RICHTEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL/*|wxWANTS_CHARS*/);
     wxASSERT(!m_richTextCtrl->GetBuffer().GetAttributes().HasFontPixelSize());
 
-    wxFont font(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
+    wxFont font(12, wxROMAN, wxNORMAL, wxNORMAL);
 
     m_richTextCtrl->SetFont(font);
 
@@ -2227,37 +2227,37 @@ public:
     /**
         Returns @true if this object has virtual attributes that we can provide.
     */
-    virtual bool HasVirtualAttributes(wxRichTextObject* obj) const wxOVERRIDE;
+    virtual bool HasVirtualAttributes(wxRichTextObject* obj) const;
 
     /**
         Provides virtual attributes that we can provide.
     */
-    virtual bool GetVirtualAttributes(wxRichTextAttr& attr, wxRichTextObject* obj) const wxOVERRIDE;
+    virtual bool GetVirtualAttributes(wxRichTextAttr& attr, wxRichTextObject* obj) const;
 
     /**
         Gets the count for mixed virtual attributes for individual positions within the object.
         For example, individual characters within a text object may require special highlighting.
     */
-    virtual int GetVirtualSubobjectAttributesCount(wxRichTextObject* WXUNUSED(obj)) const wxOVERRIDE { return 0; }
+    virtual int GetVirtualSubobjectAttributesCount(wxRichTextObject* WXUNUSED(obj)) const { return 0; }
 
     /**
         Gets the mixed virtual attributes for individual positions within the object.
         For example, individual characters within a text object may require special highlighting.
         Returns the number of virtual attributes found.
     */
-    virtual int GetVirtualSubobjectAttributes(wxRichTextObject* WXUNUSED(obj), wxArrayInt& WXUNUSED(positions), wxRichTextAttrArray& WXUNUSED(attributes)) const wxOVERRIDE  { return 0; }
+    virtual int GetVirtualSubobjectAttributes(wxRichTextObject* WXUNUSED(obj), wxArrayInt& WXUNUSED(positions), wxRichTextAttrArray& WXUNUSED(attributes)) const  { return 0; }
 
     /**
         Do we have virtual text for this object? Virtual text allows an application
         to replace characters in an object for editing and display purposes, for example
         for highlighting special characters.
     */
-    virtual bool HasVirtualText(const wxRichTextPlainText* WXUNUSED(obj)) const wxOVERRIDE { return false; }
+    virtual bool HasVirtualText(const wxRichTextPlainText* WXUNUSED(obj)) const { return false; }
 
     /**
         Gets the virtual text for this object.
     */
-    virtual bool GetVirtualText(const wxRichTextPlainText* WXUNUSED(obj), wxString& WXUNUSED(text)) const wxOVERRIDE { return false; }
+    virtual bool GetVirtualText(const wxRichTextPlainText* WXUNUSED(obj), wxString& WXUNUSED(text)) const { return false; }
 
     wxColour    m_lockBackgroundColour;
 };

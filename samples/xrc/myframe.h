@@ -43,7 +43,6 @@ private:
     void OnDerivedDialogToolOrMenuCommand(wxCommandEvent& event);
     void OnControlsToolOrMenuCommand(wxCommandEvent& event);
     void OnUncenteredToolOrMenuCommand(wxCommandEvent& event);
-    void OnAuiDemoToolOrMenuCommand(wxCommandEvent& event);
     void OnObjRefToolOrMenuCommand(wxCommandEvent& event);
     void OnCustomClassToolOrMenuCommand(wxCommandEvent& event);
     void OnPlatformPropertyToolOrMenuCommand(wxCommandEvent& event);
