@@ -60,7 +60,7 @@ bool MyApp::OnInit()
     return true;
 }
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ---------------------------------------------------------------------------
 // MyFrame

@@ -28,7 +28,7 @@
 MyFrame *frame = NULL;
 wxList my_children;
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // For drawing lines in a canvas
 long xpos = -1;

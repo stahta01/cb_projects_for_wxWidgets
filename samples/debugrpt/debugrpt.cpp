@@ -17,17 +17,14 @@
 #include "wx/frame.h"
 #include "wx/icon.h"
 #include "wx/menu.h"
-#include "wx/choicdlg.h"
 #include "wx/msgdlg.h"
 #include "wx/button.h"
 #include "wx/dcclient.h"
-#include "wx/timer.h"
 
 #include "wx/datetime.h"
 #include "wx/ffile.h"
 #include "wx/filename.h"
 #include "wx/debugrpt.h"
-#include "wx/dynlib.h"
 
 #if !wxUSE_DEBUGREPORT
     #error "This sample can't be built without wxUSE_DEBUGREPORT"
@@ -64,7 +61,7 @@ protected:
     // this is called with the contents of the server response: you will
     // probably want to parse the XML document in OnServerReply() instead of
     // just dumping it as I do
-    virtual bool OnServerReply(const wxArrayString& reply) wxOVERRIDE
+    virtual bool OnServerReply(const wxArrayString& reply)
     {
         if ( reply.IsEmpty() )
         {
@@ -144,12 +141,10 @@ void foo(int n)
 
 enum
 {
-    DebugRpt_ListLoadedDLLs = 50,
     DebugRpt_Quit = wxID_EXIT,
     DebugRpt_Crash = 100,
     DebugRpt_Current,
     DebugRpt_Paint,
-    DebugRpt_Timer,
     DebugRpt_Upload,
     DebugRpt_About = wxID_ABOUT
 };
@@ -160,28 +155,15 @@ public:
     MyFrame();
 
 private:
-    void OnListLoadedDLLs(wxCommandEvent& event);
     void OnQuit(wxCommandEvent& event);
     void OnReportForCrash(wxCommandEvent& event);
     void OnReportForCurrent(wxCommandEvent& event);
     void OnReportPaint(wxCommandEvent& event);
-    void OnReportTimer(wxCommandEvent& event);
     void OnReportUpload(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
 
     void OnPaint(wxPaintEvent& event);
 
-    // a timer whose only purpose in life is to crash as soon as it's started
-    class BadTimer : public wxTimer
-    {
-    public:
-        BadTimer() { }
-
-        virtual void Notify() wxOVERRIDE
-        {
-            foo(8);
-        }
-    } m_badTimer;
 
     // number of lines drawn in OnPaint()
     int m_numLines;
@@ -205,10 +187,10 @@ public:
     MyApp();
 
     // create our main window here
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 
     // called when a crash occurs in this application
-    virtual void OnFatalException() wxOVERRIDE;
+    virtual void OnFatalException();
 
     // this is where we really generate the debug report
     void GenerateReport(wxDebugReport::Context ctx);
@@ -224,7 +206,7 @@ private:
     wxDECLARE_NO_COPY_CLASS(MyApp);
 };
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation
@@ -235,12 +217,10 @@ wxIMPLEMENT_APP(MyApp);
 // ----------------------------------------------------------------------------
 
 wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
-    EVT_MENU(DebugRpt_ListLoadedDLLs, MyFrame::OnListLoadedDLLs)
     EVT_MENU(DebugRpt_Quit, MyFrame::OnQuit)
     EVT_MENU(DebugRpt_Crash, MyFrame::OnReportForCrash)
     EVT_MENU(DebugRpt_Current, MyFrame::OnReportForCurrent)
     EVT_MENU(DebugRpt_Paint, MyFrame::OnReportPaint)
-    EVT_MENU(DebugRpt_Timer, MyFrame::OnReportTimer)
     EVT_MENU(DebugRpt_Upload, MyFrame::OnReportUpload)
     EVT_MENU(DebugRpt_About, MyFrame::OnAbout)
 
@@ -256,8 +236,6 @@ MyFrame::MyFrame()
     SetIcon(wxICON(sample));
 
     wxMenu *menuFile = new wxMenu;
-    menuFile->Append(DebugRpt_ListLoadedDLLs, wxT("&List loaded DLLs...\tCtrl-L"));
-    menuFile->AppendSeparator();
     menuFile->Append(DebugRpt_Quit, wxT("E&xit\tAlt-X"));
 
     wxMenu *menuReport = new wxMenu;
@@ -267,8 +245,6 @@ MyFrame::MyFrame()
                        wxT("Create report for the current program context"));
     menuReport->Append(DebugRpt_Paint, wxT("Report for &paint handler\tCtrl-P"),
                        wxT("Provoke a repeatable crash in wxEVT_PAINT handler"));
-    menuReport->Append(DebugRpt_Timer, wxT("Report for &timer handler\tCtrl-T"),
-                       wxT("Provoke a crash in wxEVT_TIMER handler"));
     menuReport->AppendSeparator();
     menuReport->AppendCheckItem(DebugRpt_Upload, wxT("Up&load debug report"),
                        wxT("You need to configure a web server accepting debug report uploads to use this function"));
@@ -285,47 +261,6 @@ MyFrame::MyFrame()
     CreateStatusBar();
 
     Show();
-}
-
-void MyFrame::OnListLoadedDLLs(wxCommandEvent& WXUNUSED(event))
-{
-    const wxDynamicLibraryDetailsArray loaded = wxDynamicLibrary::ListLoaded();
-    const size_t count = loaded.size();
-    if ( !count )
-    {
-        wxLogError("Failed to get the list of loaded dynamic libraries.");
-        return;
-    }
-
-    wxArrayString names;
-    names.reserve(count);
-    for ( size_t n = 0; n < count; n++ )
-    {
-        names.push_back(loaded[n].GetName());
-    }
-
-    for ( ;; )
-    {
-        const int sel = wxGetSingleChoiceIndex
-                        (
-                            "Choose a library to show more information about it",
-                            "List of loaded dynamic libraries",
-                            names,
-                            this
-                        );
-        if ( sel == wxNOT_FOUND )
-            return;
-
-        const wxDynamicLibraryDetails& det = loaded[sel];
-        void *addr = 0;
-        size_t len = 0;
-        det.GetAddress(&addr, &len);
-        wxLogMessage("Full path is \"%s\", memory range %p:%p, version \"%s\"",
-                     det.GetPath(),
-                     addr,
-                     static_cast<void*>(static_cast<char*>(addr) + len),
-                     det.GetVersion());
-    }
 }
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
@@ -354,12 +289,6 @@ void MyFrame::OnReportPaint(wxCommandEvent& WXUNUSED(event))
 
     // ensure it's called immediately
     Refresh();
-}
-
-void MyFrame::OnReportTimer(wxCommandEvent& WXUNUSED(event))
-{
-    // this will result in a crash in BadTimer::OnNotify() soon
-    m_badTimer.StartOnce(100);
 }
 
 void MyFrame::OnReportUpload(wxCommandEvent& event)
@@ -440,20 +369,10 @@ void MyApp::GenerateReport(wxDebugReport::Context ctx)
     // can also add an existing file directly, it will be copied
     // automatically
 #ifdef __WXMSW__
-    wxString windir;
-    if ( !wxGetEnv("WINDIR", &windir) )
-        windir = "C:\\Windows";
-    fn.AssignDir(windir);
-    fn.AppendDir("system32");
-    fn.AppendDir("drivers");
-    fn.AppendDir("etc");
-#else // !__WXMSW__
-    fn.AssignDir("/etc");
-#endif // __WXMSW__/!__WXMSW__
-    fn.SetFullName("hosts");
-
-    if ( fn.FileExists() )
-        report->AddFile(fn.GetFullPath(), "Local hosts file");
+    report->AddFile(wxT("c:\\autoexec.bat"), wxT("DOS startup file"));
+#else
+    report->AddFile(wxT("/etc/motd"), wxT("Message of the day"));
+#endif
 
     // calling Show() is not mandatory, but is more polite
     if ( wxDebugReportPreviewStd().Show(*report) )

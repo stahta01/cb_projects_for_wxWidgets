@@ -40,7 +40,7 @@ private:
     wxScopedPtr<wxPreferencesEditor> m_prefEditor;
 };
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 
 class MyFrame : public wxFrame

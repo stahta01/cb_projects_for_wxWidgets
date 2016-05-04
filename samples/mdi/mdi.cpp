@@ -56,7 +56,7 @@
 
 #include "mdi.h"
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ---------------------------------------------------------------------------
 // event tables
@@ -69,11 +69,6 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxMDIParentFrame)
     EVT_MENU(wxID_EXIT, MyFrame::OnQuit)
 
     EVT_MENU(wxID_CLOSE_ALL, MyFrame::OnCloseAll)
-
-    EVT_MENU_OPEN(MyFrame::OnMenuOpen)
-    EVT_MENU_HIGHLIGHT(wxID_ABOUT, MyFrame::OnMenuHighlight)
-    EVT_MENU_HIGHLIGHT(MDI_REFRESH, MyFrame::OnMenuHighlight)
-    EVT_MENU_CLOSE(MyFrame::OnMenuClose)
 
     EVT_CLOSE(MyFrame::OnClose)
 wxEND_EVENT_TABLE()
@@ -96,30 +91,15 @@ wxBEGIN_EVENT_TABLE(MyChild, wxMDIChildFrame)
     EVT_SIZE(MyChild::OnSize)
     EVT_MOVE(MyChild::OnMove)
 
-    EVT_MENU_OPEN(MyChild::OnMenuOpen)
-    EVT_MENU_HIGHLIGHT(wxID_ABOUT, MyChild::OnMenuHighlight)
-    EVT_MENU_HIGHLIGHT(MDI_REFRESH, MyChild::OnMenuHighlight)
-    EVT_MENU_CLOSE(MyChild::OnMenuClose)
-
     EVT_CLOSE(MyChild::OnCloseWindow)
 wxEND_EVENT_TABLE()
 
 wxBEGIN_EVENT_TABLE(MyCanvas, wxScrolledWindow)
-    EVT_CONTEXT_MENU(MyCanvas::OnMenu)
     EVT_MOUSE_EVENTS(MyCanvas::OnEvent)
-
-    EVT_MENU_OPEN(MyCanvas::OnMenuOpen)
-    EVT_MENU_HIGHLIGHT(wxID_ABOUT, MyCanvas::OnMenuHighlight)
-    EVT_MENU_HIGHLIGHT(MDI_REFRESH, MyCanvas::OnMenuHighlight)
-    EVT_MENU_CLOSE(MyCanvas::OnMenuClose)
-
-    EVT_UPDATE_UI(MDI_DISABLED_FROM_CANVAS, MyCanvas::OnUpdateUIDisable)
 wxEND_EVENT_TABLE()
 
 wxBEGIN_EVENT_TABLE(MyChild::EventHandler, wxEvtHandler)
     EVT_MENU(MDI_REFRESH, MyChild::EventHandler::OnRefresh)
-
-    EVT_UPDATE_UI(MDI_DISABLED_FROM_CHILD, MyChild::OnUpdateUIDisable)
 wxEND_EVENT_TABLE()
 
 // ===========================================================================
@@ -152,8 +132,7 @@ bool MyApp::OnInit()
 // Define my frame constructor
 MyFrame::MyFrame()
        : wxMDIParentFrame(NULL, wxID_ANY, "wxWidgets MDI Sample",
-                          wxDefaultPosition, wxSize(500, 400)),
-         MenuEventLogger("parent", this)
+                          wxDefaultPosition, wxSize(500, 400))
 {
     SetIcon(wxICON(sample));
 
@@ -196,13 +175,9 @@ MyFrame::MyFrame()
 #endif // wxUSE_STATUSBAR
 
 
-    m_textWindow = new wxTextCtrl(this, wxID_ANY, "A log window\n",
+    m_textWindow = new wxTextCtrl(this, wxID_ANY, "A help window",
                                   wxDefaultPosition, wxDefaultSize,
-                                  wxTE_MULTILINE | wxTE_READONLY);
-
-    // don't clutter the text window with time stamps
-    wxLog::DisableTimestamp();
-    delete wxLog::SetActiveTarget(new wxLogTextCtrl(m_textWindow));
+                                  wxTE_MULTILINE | wxSUNKEN_BORDER);
 
 #if wxUSE_TOOLBAR
     CreateToolBar(wxNO_BORDER | wxTB_FLAT | wxTB_HORIZONTAL);
@@ -228,9 +203,6 @@ MyFrame::~MyFrame()
     // and disconnect it to prevent accessing already deleted m_textWindow in
     // the size event handler if it's called during destruction
     Disconnect(wxEVT_SIZE, wxSizeEventHandler(MyFrame::OnSize));
-
-    // also prevent its use as log target
-    delete wxLog::SetActiveTarget(NULL);
 }
 
 #if wxUSE_MENUS
@@ -257,7 +229,7 @@ wxMenuBar *MyFrame::CreateMainMenubar()
 void MyFrame::OnClose(wxCloseEvent& event)
 {
     unsigned numChildren = MyChild::GetChildrenCount();
-    if ( event.CanVeto() && (numChildren > 1) )
+    if ( event.CanVeto() && (numChildren > 0) )
     {
         wxString msg;
         msg.Printf("%d windows still open, close anyhow?", numChildren);
@@ -361,13 +333,11 @@ void MyFrame::InitToolBar(wxToolBar* toolBar)
 // ---------------------------------------------------------------------------
 
 // Define a constructor for my canvas
-MyCanvas::MyCanvas(wxFrame *parent, const wxPoint& pos, const wxSize& size)
+MyCanvas::MyCanvas(wxWindow *parent, const wxPoint& pos, const wxSize& size)
         : wxScrolledWindow(parent, wxID_ANY, pos, size,
                            wxSUNKEN_BORDER |
                            wxNO_FULL_REPAINT_ON_RESIZE |
-                           wxVSCROLL | wxHSCROLL),
-          MenuEventLogger("canvas", parent)
-
+                           wxVSCROLL | wxHSCROLL)
 {
     SetBackgroundColour(*wxWHITE);
     SetCursor(wxCursor(wxCURSOR_PENCIL));
@@ -427,22 +397,9 @@ void MyCanvas::OnEvent(wxMouseEvent& event)
 
         m_dirty = true;
     }
-    else
-    {
-        event.Skip();
-    }
 
     xpos = pt.x;
     ypos = pt.y;
-}
-
-void MyCanvas::OnMenu(wxContextMenuEvent& event)
-{
-    wxMenu menu;
-    menu.Append(MDI_REFRESH, "&Refresh picture");
-    menu.Append(MDI_DISABLED_FROM_CANVAS, "Item disabled by canvas");
-    menu.Append(MDI_DISABLED_FROM_CHILD, "Item disabled by child");
-    PopupMenu(&menu, ScreenToClient(event.GetPosition()));
 }
 
 // ---------------------------------------------------------------------------
@@ -457,8 +414,7 @@ MyChild::MyChild(wxMDIParentFrame *parent)
             parent,
             wxID_ANY,
             wxString::Format("Child %u", ++ms_numChildren)
-         ),
-         MenuEventLogger("child", this)
+         )
 {
     m_canvas = new MyCanvas(this, wxPoint(0, 0), GetClientSize());
 
@@ -484,9 +440,6 @@ MyChild::MyChild(wxMDIParentFrame *parent)
         menuChild->Append(MDI_CHANGE_SIZE, "Resize frame\tCtrl-S");
     }
 #if wxUSE_CLIPBOARD
-    menuChild->AppendSeparator();
-    menuChild->Append(MDI_DISABLED_FROM_CANVAS, "Item not disabled by canvas");
-    menuChild->Append(MDI_DISABLED_FROM_CHILD, "Item disabled by child");
     menuChild->AppendSeparator();
     menuChild->Append(wxID_PASTE, "Copy text from clipboard\tCtrl-V");
 #endif // wxUSE_CLIPBOARD

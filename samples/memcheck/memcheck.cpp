@@ -47,10 +47,10 @@ class MyFrame: public wxFrame
     MyFrame(wxFrame *parent);
     void OnQuit(wxCommandEvent& event);
 
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // `Main program' equivalent, creating windows and returning main app frame
 bool MyApp::OnInit(void)

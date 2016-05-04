@@ -91,11 +91,11 @@ public:
     ButtonWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~ButtonWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_button; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateButton(); }
+    virtual wxControl *GetWidget() const { return m_button; }
+    virtual void RecreateWidget() { CreateButton(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers
@@ -408,7 +408,7 @@ void ButtonWidgetsPage::CreateButton()
         label = m_textLabel->GetValue();
     }
 
-    int flags = GetAttrs().m_defaultFlags;
+    int flags = ms_defaultFlags;
     switch ( m_radioHAlign->GetSelection() )
     {
         case ButtonHAlign_Left:

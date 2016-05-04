@@ -44,8 +44,8 @@ class MyApp: public wxApp
 {
 public:
     MyApp();
-    virtual bool OnInit() wxOVERRIDE;
-    virtual int OnExit() wxOVERRIDE;
+    virtual bool OnInit();
+    virtual int OnExit();
 
 //// Operations
 
@@ -64,10 +64,10 @@ protected:
     wxBitmap    m_background;
     bool        m_useScreen;
 
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
-wxDECLARE_APP(MyApp);
+DECLARE_APP(MyApp)
 
 #define TEST_USE_SCREEN   100
 
@@ -180,7 +180,7 @@ public:
     // On some platforms, notably Mac OS X with Core Graphics, we can't blit from
     // a window, so we need to draw the background explicitly.
     virtual bool UpdateBackingFromWindow(wxDC& windowDC, wxMemoryDC& destDC, const wxRect& sourceRect,
-                    const wxRect& destRect) const wxOVERRIDE;
+                    const wxRect& destRect) const;
 
 protected:
     MyCanvas*   m_canvas;

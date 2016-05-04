@@ -381,7 +381,7 @@ void MyListModel::DeleteItems( const wxDataViewItemArray &items )
     {
         // none of the selected items were in the range of the items
         // which we store... for simplicity, don't allow removing them
-        wxLogError( "Cannot remove rows with an index greater than %u", unsigned(m_textColValues.GetCount()) );
+        wxLogError( "Cannot remove rows with an index greater than %d", m_textColValues.GetCount() );
         return;
     }
 
@@ -428,10 +428,6 @@ void MyListModel::GetValueByRow( wxVariant &variant,
             }
             break;
 
-        case Col_Date:
-            variant = wxDateTime(1, wxDateTime::Jan, 2000).Add(wxTimeSpan(row));
-            break;
-
         case Col_TextWithAttr:
             {
                 static const char *labels[5] =
@@ -444,13 +440,7 @@ void MyListModel::GetValueByRow( wxVariant &variant,
             break;
 
         case Col_Custom:
-            {
-                IntToStringMap::const_iterator it = m_customColValues.find(row);
-                if ( it != m_customColValues.end() )
-                    variant = it->second;
-                else
-                    variant = wxString::Format("%d", row % 100);
-            }
+            variant = wxString::Format("%d", row % 100);
             break;
 
         case Col_Max:
@@ -464,7 +454,6 @@ bool MyListModel::GetAttrByRow( unsigned int row, unsigned int col,
     switch ( col )
     {
         case Col_EditableText:
-        case Col_Date:
             return false;
 
         case Col_IconText:
@@ -535,13 +524,9 @@ bool MyListModel::SetValueByRow( const wxVariant &variant,
             }
             return true;
 
-        case Col_Date:
         case Col_TextWithAttr:
-            wxLogError("Cannot edit the column %d", col);
-            break;
-
         case Col_Custom:
-            m_customColValues[row] = variant.GetString();
+            wxLogError("Cannot edit the column %d", col);
             break;
 
         case Col_Max:

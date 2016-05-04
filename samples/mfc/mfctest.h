@@ -26,9 +26,6 @@ public:
     //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
-
-private:
-    class wxNativeContainerWindow* m_containerWX;
 };
 
 // A dummy CWnd pointing to a wxWindow's HWND

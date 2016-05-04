@@ -294,7 +294,7 @@ public:
 
     // override the base class function so that when this window is scrolled,
     // the labels are scrolled in sync
-    virtual void ScrollWindow(int dx, int dy, const wxRect *rect) wxOVERRIDE
+    virtual void ScrollWindow(int dx, int dy, const wxRect *rect)
     {
         wxPanel::ScrollWindow( dx, dy, rect );
         m_colLabels->ScrollWindow( dx, 0, rect );
@@ -343,7 +343,7 @@ private:
         }
 
 
-        // Second cell: (200,0)(100,25)
+        // Second cell: (0,200)(100,25)
         // It it on screen?
         if ((200+100-scroll_x > 0) && (0+25-scroll_y > 0) &&
             (200-scroll_x < size_x) && (0-scroll_y < size_y))
@@ -402,7 +402,7 @@ public:
 protected:
     // scrolled windows which use scroll target different from the window
     // itself must override this virtual method
-    virtual wxSize GetSizeAvailableForScrollTarget(const wxSize& size) wxOVERRIDE
+    virtual wxSize GetSizeAvailableForScrollTarget(const wxSize& size)
     {
         // decrease the total size by the size of the non-scrollable parts
         // above/to the left of the canvas
@@ -473,7 +473,7 @@ public:
         DoSyncIfNecessary();
     }
 
-    virtual void ScrollWindow(int dx, int dy, const wxRect *rect = NULL) wxOVERRIDE
+    virtual void ScrollWindow(int dx, int dy, const wxRect *rect = NULL)
     {
         wxScrolled<wxWindow>::ScrollWindow(dx, dy, rect);
 
@@ -523,7 +523,7 @@ public:
         SetScrollbars(0, m_hLine, 0, m_nLines + 1, 0, 0, true /* no refresh */);
     }
 
-    virtual void OnDraw(wxDC& dc) wxOVERRIDE;
+    virtual void OnDraw(wxDC& dc);
 };
 
 // this class does "smart" redrawing - only redraws the lines which must be
@@ -542,7 +542,7 @@ public:
         SetVirtualSize( wxDefaultCoord, ( m_nLines + 1 ) * m_hLine );
     }
 
-    virtual void OnDraw(wxDC& dc) wxOVERRIDE;
+    virtual void OnDraw(wxDC& dc);
 };
 
 // ----------------------------------------------------------------------------
@@ -567,7 +567,7 @@ public:
 
 private:
     // event handlers
-    void OnDraw(wxDC& dc) wxOVERRIDE;
+    void OnDraw(wxDC& dc);
     void OnMouseLeftDown(wxMouseEvent& event);
     void OnMouseLeftUp(wxMouseEvent& event);
     void OnMouseMove(wxMouseEvent& event);
@@ -639,7 +639,7 @@ private:
 class MyApp : public wxApp
 {
 public:
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 
@@ -978,7 +978,7 @@ void MyFrame::OnAbout( wxCommandEvent &WXUNUSED(event) )
 // MyApp
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
 {

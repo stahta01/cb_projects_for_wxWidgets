@@ -70,7 +70,7 @@
 // MyApp implementation
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 wxBEGIN_EVENT_TABLE(MyApp, wxApp)
     EVT_MENU(wxID_ABOUT, MyApp::OnAbout)
@@ -108,10 +108,6 @@ void MyApp::OnInitCmdLine(wxCmdLineParser& parser)
                      "run in SDI mode: multiple documents, multiple windows");
     parser.AddSwitch("", CmdLineOption::SINGLE,
                      "run in single document mode");
-
-    parser.AddParam("document-file",
-                    wxCMD_LINE_VAL_STRING,
-                    wxCMD_LINE_PARAM_MULTIPLE | wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -144,20 +140,8 @@ bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
         return false;
     }
 
-    // save any files given on the command line: we'll open them in OnInit()
-    // later, after creating the frame
-    for ( size_t i = 0; i != parser.GetParamCount(); ++i )
-        m_filesFromCmdLine.push_back(parser.GetParam(i));
-
     return wxApp::OnCmdLineParsed(parser);
 }
-
-#ifdef __WXMAC__
-void MyApp::MacNewFile()
-{
-    wxDocManager::GetDocumentManager()->CreateNewDocument();
-}
-#endif // __WXMAC__
 
 bool MyApp::OnInit()
 {
@@ -178,6 +162,9 @@ bool MyApp::OnInit()
     new wxDocTemplate(docManager, "Drawing", "*.drw", "", "drw",
                       "Drawing Doc", "Drawing View",
                       CLASSINFO(DrawingDocument), CLASSINFO(DrawingView));
+#if defined( __WXMAC__ )  && wxOSX_USE_CARBON
+    wxFileName::MacRegisterDefaultTypeAndCreator("drw" , 'WXMB' , 'WXMA');
+#endif
 
     if ( m_mode == Mode_Single )
     {
@@ -191,6 +178,9 @@ bool MyApp::OnInit()
         new wxDocTemplate(docManager, "Text", "*.txt;*.text", "", "txt;text",
                           "Text Doc", "Text View",
                           CLASSINFO(TextEditDocument), CLASSINFO(TextEditView));
+#if defined( __WXMAC__ ) && wxOSX_USE_CARBON
+        wxFileName::MacRegisterDefaultTypeAndCreator("txt" , 'TEXT' , 'WXMA');
+#endif
         // Create a template relating image documents to their views
         new wxDocTemplate(docManager, "Image", "*.png;*.jpg", "", "png;jpg",
                           "Image Doc", "Image View",
@@ -239,6 +229,7 @@ bool MyApp::OnInit()
     {
         m_canvas = new MyCanvas(NULL, frame);
         m_menuEdit = CreateDrawingEditMenu();
+        docManager->CreateNewDocument();
     }
 
     CreateMenuBarForFrame(frame, menuFile, m_menuEdit);
@@ -246,16 +237,6 @@ bool MyApp::OnInit()
     frame->SetIcon(wxICON(doc));
     frame->Centre();
     frame->Show();
-
-    if ( m_filesFromCmdLine.empty() )
-    {
-        docManager->CreateNewDocument();
-    }
-    else // we have files to open on command line
-    {
-        for ( size_t i = 0; i != m_filesFromCmdLine.size(); ++i )
-            docManager->CreateDocument(m_filesFromCmdLine[i], wxDOC_SILENT);
-    }
 
     return true;
 }
@@ -404,8 +385,13 @@ void MyApp::OnAbout(wxCommandEvent& WXUNUSED(event))
             wxFAIL_MSG( "unknown mode ");
     }
 
+#ifdef __VISUALC6__
+    const int docsCount =
+        wxDocManager::GetDocumentManager()->GetDocuments().GetCount();
+#else
     const int docsCount =
         wxDocManager::GetDocumentManager()->GetDocumentsVector().size();
+#endif
 
     wxLogMessage
     (

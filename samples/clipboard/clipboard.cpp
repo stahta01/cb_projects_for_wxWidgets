@@ -31,7 +31,7 @@
 class MyApp : public wxApp
 {
 public:
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 #if USE_ASYNCHRONOUS_CLIPBOARD_REQUEST
@@ -84,7 +84,7 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
 #endif
 wxEND_EVENT_TABLE()
 
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
 {

@@ -48,7 +48,7 @@ public:
     // this one is called on application startup and is a good place for the app
     // initialization (doing it here and not in the ctor allows to have an error
     // return: if OnInit() returns false, the application terminates)
-    virtual bool OnInit() wxOVERRIDE;
+    virtual bool OnInit();
 };
 
 // MyCanvas is a canvas on which you can type
@@ -169,7 +169,7 @@ wxEND_EVENT_TABLE()
 // static object for many reasons) and also declares the accessor function
 // wxGetApp() which will return the reference of the right type (i.e. MyApp and
 // not wxApp)
-wxIMPLEMENT_APP(MyApp);
+IMPLEMENT_APP(MyApp)
 
 // ============================================================================
 // implementation
@@ -294,7 +294,7 @@ void MyFrame::OnSetFontSize(wxCommandEvent& WXUNUSED(event))
 // MyCanvas
 // ----------------------------------------------------------------------------
 
-wxIMPLEMENT_DYNAMIC_CLASS(MyCanvas, wxScrolledWindow);
+IMPLEMENT_DYNAMIC_CLASS(MyCanvas, wxScrolledWindow)
 
 wxBEGIN_EVENT_TABLE(MyCanvas, wxScrolledWindow)
     EVT_PAINT(MyCanvas::OnPaint)

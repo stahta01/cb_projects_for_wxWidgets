@@ -16,7 +16,7 @@
 #include "wx/toolbook.h"
 #include "wx/aui/auibook.h"
 
-#if wxUSE_LOG
+#if wxUSE_LOG && !defined( __SMARTPHONE__ )
     #define USE_LOG 1
 #else
     #define USE_LOG 0
@@ -26,10 +26,10 @@
 class MyApp : public wxApp
 {
 public:
-    bool OnInit() wxOVERRIDE;
+    bool OnInit();
 };
 
-wxDECLARE_APP(MyApp);
+DECLARE_APP(MyApp)
 
 
 class MyFrame : public wxFrame

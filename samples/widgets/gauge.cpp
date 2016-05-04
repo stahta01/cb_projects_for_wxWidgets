@@ -75,11 +75,11 @@ public:
     GaugeWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~GaugeWidgetsPage();
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_gauge; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateGauge(); }
+    virtual wxControl *GetWidget() const { return m_gauge; }
+    virtual void RecreateWidget() { CreateGauge(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers
@@ -121,8 +121,7 @@ protected:
 
     // the checkboxes for styles
     wxCheckBox *m_chkVert,
-               *m_chkSmooth,
-               *m_chkProgress;
+               *m_chkSmooth;
 
     // the gauge itself and the sizer it is in
     wxGauge *m_gauge;
@@ -187,8 +186,7 @@ GaugeWidgetsPage::GaugeWidgetsPage(WidgetsBookCtrl *book,
     m_timer = (wxTimer *)NULL;
 
     m_chkVert =
-    m_chkSmooth =
-    m_chkProgress = (wxCheckBox *)NULL;
+    m_chkSmooth = (wxCheckBox *)NULL;
 
     m_gauge = (wxGauge *)NULL;
     m_sizerGauge = (wxSizer *)NULL;
@@ -205,7 +203,6 @@ void GaugeWidgetsPage::CreateContent()
 
     m_chkVert = CreateCheckBoxAndAddToSizer(sizerLeft, wxT("&Vertical"));
     m_chkSmooth = CreateCheckBoxAndAddToSizer(sizerLeft, wxT("&Smooth"));
-    m_chkProgress = CreateCheckBoxAndAddToSizer(sizerLeft, wxT("&Progress"));
 
     sizerLeft->Add(5, 5, 0, wxGROW | wxALL, 5); // spacer
 
@@ -278,12 +275,11 @@ void GaugeWidgetsPage::Reset()
 {
     m_chkVert->SetValue(false);
     m_chkSmooth->SetValue(false);
-    m_chkProgress->SetValue(false);
 }
 
 void GaugeWidgetsPage::CreateGauge()
 {
-    int flags = GetAttrs().m_defaultFlags;
+    int flags = ms_defaultFlags;
 
     if ( m_chkVert->GetValue() )
         flags |= wxGA_VERTICAL;
@@ -292,9 +288,6 @@ void GaugeWidgetsPage::CreateGauge()
 
     if ( m_chkSmooth->GetValue() )
         flags |= wxGA_SMOOTH;
-
-    if ( m_chkProgress->GetValue() )
-        flags |= wxGA_PROGRESS;
 
     int val = 0;
     if ( m_gauge )
@@ -438,8 +431,7 @@ void GaugeWidgetsPage::OnUpdateUIRangeButton(wxUpdateUIEvent& event)
 
 void GaugeWidgetsPage::OnUpdateUIResetButton(wxUpdateUIEvent& event)
 {
-    event.Enable( m_chkVert->GetValue() || m_chkSmooth->GetValue() ||
-                  m_chkProgress->GetValue() );
+    event.Enable( m_chkVert->GetValue() || m_chkSmooth->GetValue() );
 }
 
 void GaugeWidgetsPage::OnCheckOrRadioBox(wxCommandEvent& WXUNUSED(event))

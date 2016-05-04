@@ -75,11 +75,11 @@ public:
     CheckBoxWidgetsPage(WidgetsBookCtrl *book, wxImageList *imaglist);
     virtual ~CheckBoxWidgetsPage(){};
 
-    virtual wxWindow *GetWidget() const wxOVERRIDE { return m_checkbox; }
-    virtual void RecreateWidget() wxOVERRIDE { CreateCheckbox(); }
+    virtual wxControl *GetWidget() const { return m_checkbox; }
+    virtual void RecreateWidget() { CreateCheckbox(); }
 
     // lazy creation of the content
-    virtual void CreateContent() wxOVERRIDE;
+    virtual void CreateContent();
 
 protected:
     // event handlers
@@ -252,7 +252,7 @@ void CheckBoxWidgetsPage::CreateCheckbox()
 
     delete m_checkbox;
 
-    int flags = GetAttrs().m_defaultFlags;
+    int flags = ms_defaultFlags;
     if ( m_chkRight->IsChecked() )
         flags |= wxALIGN_RIGHT;
 

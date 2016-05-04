@@ -11,7 +11,7 @@
 #define _EDIT_H_
 
 //----------------------------------------------------------------------------
-// information
+// informations
 //----------------------------------------------------------------------------
 
 
@@ -79,7 +79,7 @@ public:
     void OnEditSelectAll (wxCommandEvent &event);
     void OnEditSelectLine (wxCommandEvent &event);
     //! view
-    void OnHighlightLang (wxCommandEvent &event);
+    void OnHilightLang (wxCommandEvent &event);
     void OnDisplayEOL (wxCommandEvent &event);
     void OnIndentGuide (wxCommandEvent &event);
     void OnLineNumber (wxCommandEvent &event);
@@ -98,9 +98,6 @@ public:
     //! extra
     void OnChangeCase (wxCommandEvent &event);
     void OnConvertEOL (wxCommandEvent &event);
-    void OnMultipleSelections(wxCommandEvent& event);
-    void OnMultiPaste(wxCommandEvent& event);
-    void OnMultipleSelectionsTyping(wxCommandEvent& event);
     // stc
     void OnMarginClick (wxStyledTextEvent &event);
     void OnCharAdded  (wxStyledTextEvent &event);
@@ -127,7 +124,7 @@ private:
     // file
     wxString m_filename;
 
-    // language properties
+    // lanugage properties
     LanguageInfo const* m_language;
 
     // margin variables
