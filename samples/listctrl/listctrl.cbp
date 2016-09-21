@@ -24,6 +24,31 @@
 					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
 				</Environment>
 			</Target>
+			<Target title="msys2_wx30_gcc">
+				<Option output="bin/$(TARGET_NAME)/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".objs/$(TARGET_NAME)" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Compiler>
+					<Add option='-DwxOVERRIDE=&quot;&quot;' />
+					<Add directory="$(TARGET_COMPILER_DIR)lib/wx/include/msw-unicode-$(WX_VERSION)" />
+					<Add directory="$(TARGET_COMPILER_DIR)include/wx-$(WX_VERSION)" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory=".." />
+					<Add directory="$(TARGET_COMPILER_DIR)include/wx-$(WX_VERSION)" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="wx_msw$(WX_SUFFIX)_core-$(WX_VERSION).dll" />
+					<Add library="wx_base$(WX_SUFFIX)-$(WX_VERSION).dll" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="u" />
+					<Variable name="WX_VERSION" value="3.0" />
+				</Environment>
+			</Target>
 		</Build>
 		<VirtualTargets>
 			<Add alias="All" targets="win_gcc;" />
