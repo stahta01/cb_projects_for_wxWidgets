@@ -22,6 +22,7 @@
 				</Linker>
 				<ExtraCommands>
 					<Add before="cmd /c echo $(WXWIN)\lib\$(WXCFG)" />
+					<Add before="cmd /c where wx-config" />
 				</ExtraCommands>
 				<Environment>
 					<Variable name="WX_CONFIG" value="wx-config --compiler=gcc --wxcfg=$(WXCFG)" />
